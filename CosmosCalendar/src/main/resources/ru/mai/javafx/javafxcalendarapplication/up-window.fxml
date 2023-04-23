@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.javafx.javafxcalendarapplication.UpController">
+    <children>
+        <Label fx:id="justLabel" layoutX="28.0" layoutY="14.0" prefHeight="243.0" prefWidth="397.0" text="МОИ ЗАМЕТКИ">
+            <font>
+                <Font size="48.0" />
+            </font>
+        </Label>
+        <Button fx:id="justABtn" layoutX="110.0" layoutY="288.0" mnemonicParsing="false" prefHeight="104.0" prefWidth="252.0" text="ИЗМЕНИТЬ" />
+      <AnchorPane layoutX="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="603.0" style="-fx-background-color: #e1f7ff;">
+          <children>
+            <AnchorPane layoutX="-7.0" prefHeight="98.0" prefWidth="611.0" style="-fx-background-color: #afe6fa; -fx-border-color: black;">
+               <children>
+                    <Label fx:id="justLabel1" alignment="CENTER" layoutX="172.0" layoutY="19.0" prefHeight="59.0" prefWidth="266.0" style="-fx-background-color: #afe6fa;" text="Sign up">
+                        <font>
+                            <Font name="Garamond" size="48.0" />
+                        </font>
+                    </Label>
+               </children>
+            </AnchorPane>
+            <TextField fx:id="newLogin" layoutX="130.0" layoutY="173.0" prefHeight="26.0" prefWidth="336.0" promptText="Enter your Login..." />
+            <PasswordField fx:id="newPassword" layoutX="131.0" layoutY="216.0" prefHeight="26.0" prefWidth="336.0" promptText="Enter your password..." />
+            <Button fx:id="btnContinue" layoutX="214.0" layoutY="317.0" mnemonicParsing="false" onAction="#clickContinue" prefHeight="47.0" prefWidth="170.0" style="-fx-background-color: #caffc4; -fx-border-color: black;" text="Continue">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <PasswordField fx:id="checkPassword" layoutX="131.0" layoutY="258.0" prefHeight="26.0" prefWidth="336.0" promptText="Repeat password..." />
+            <TextField fx:id="enterName" layoutX="131.0" layoutY="131.0" prefHeight="26.0" prefWidth="336.0" promptText="Enter your Name..." />
+          </children>
+      </AnchorPane>
+    </children>
+</AnchorPane>
