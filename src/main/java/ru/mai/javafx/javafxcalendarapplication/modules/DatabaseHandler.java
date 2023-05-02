@@ -11,7 +11,7 @@ public class DatabaseHandler extends Configs {
     Connection dbConnection;
 
     public Connection getDbConnection() throws SQLException {
-        String connectionString = "jdbc:mysql://localhost:3306/users";
+        String connectionString = "jdbc:mysql://sql8.freesqldatabase.com:3306/sql8615602";
 
         dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
         return dbConnection;
