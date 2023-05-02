@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import ru.mai.javafx.javafxcalendarapplication.modules.DatabaseHandler;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UpController {
 
@@ -34,7 +36,17 @@ public class UpController {
 
     @FXML
     void clickContinue () {
-        signUp();
+        String userName = newLogin.getText().trim();
+        String password = newPassword.getText();
+
+        InController inController = new InController();
+
+        if (checkUserOnBD(userName, password) == true) {
+            System.out.println("Пользователь с таким логином и паролем уже существует");
+        } else {
+            signUp();
+            inController.loginUser(userName, password);
+        }
     }
     @FXML
     void signUp() {
@@ -67,5 +79,23 @@ public class UpController {
             passwordAnimation.playAnimation();
             checkPasswordAnimation.playAnimation();
         }
+    }
+    public boolean checkUserOnBD(String userName, String password) {
+        userName = newLogin.getText().trim();
+        password = newPassword.getText();
+        DatabaseHandler dbHandler = new DatabaseHandler();
+        User user = new User();
+        user.setUserName(userName);
+        user.setPassword(password);
+        ResultSet result = dbHandler.getUser(user);
+
+        try {
+            if (result.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

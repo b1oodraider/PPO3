@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import ru.mai.javafx.javafxcalendarapplication.modules.DatabaseHandler;
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,13 +20,6 @@ public class InController {
 
     @FXML
     private Button btnLetSGo;
-
-    @FXML
-    void clickBtnLetsGo(ActionEvent event) {
-        String loginText = enterLogin.getText().trim();
-        String passwordText = enterPassword.getText().trim();
-        loginUser(loginText, passwordText);
-    }
 
     @FXML
     private TextField enterLogin;
@@ -68,7 +60,11 @@ public class InController {
 
         try {
             if (result.next()) {
-                btnLetSGo.getScene().getWindow().hide();
+                try {
+                    btnLetSGo.getScene().getWindow().hide();
+                } catch (NullPointerException ignore) {
+
+                }
                 System.out.println("Авторизация прошла успешно");
             } else {
                 Shake loginAnimation = new Shake(enterLogin);
@@ -79,5 +75,12 @@ public class InController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void clickBtnLetsGo(ActionEvent event) {
+        String loginText = enterLogin.getText().trim();
+        String passwordText = enterPassword.getText().trim();
+        loginUser(loginText, passwordText);
     }
 }
