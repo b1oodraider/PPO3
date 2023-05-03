@@ -117,7 +117,7 @@ public class MonthlyCalendar extends GridPane {
         try {
             List<String> listOfDates = new ArrayList<String>();
             List<String> listOfHolidays = new ArrayList<String>();
-            BufferedReader bf = new BufferedReader(new FileReader("C:/Users/nokia/OneDrive/Рабочий стол/TheLast/Holidays.txt"));
+            BufferedReader bf = new BufferedReader(new FileReader("Holidays.txt"));
             String line = bf.readLine();
             while(line != null) {
                 listOfDates.add(line.split("/")[0]);
@@ -149,9 +149,9 @@ public class MonthlyCalendar extends GridPane {
                     }
                 }
                 if (isContains) {
-                    btn.setText(holidays[whatIsDate]);
+                    btn.setText(day + "\n" + holidays[whatIsDate]);
                     btn.setFont(new Font(8));
-                    btn.setStyle("-fx-background-color: #ffe2e2; -fx-border-color: #f48a8a");
+                    btn.setStyle("-fx-background-color: #ffe2e2; -fx-border-color: #f48a8a; -fx-text-alignment: CENTER");
                 } else {
                     btn.setText(String.valueOf(day));
                 }
