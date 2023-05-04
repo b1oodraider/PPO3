@@ -80,7 +80,7 @@ public class InController {
     @FXML
     void clickBtnLetsGo(ActionEvent event) {
         String loginText = enterLogin.getText().trim();
-        String passwordText = enterPassword.getText().trim();
+        String passwordText = enterPassword.getText();
         loginUser(loginText, passwordText);
     }
 }
