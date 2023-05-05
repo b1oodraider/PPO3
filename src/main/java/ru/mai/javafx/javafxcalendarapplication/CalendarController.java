@@ -47,7 +47,13 @@ public class CalendarController {
     private GridPane root;
 
     @FXML
-    private Button signIn;
+    public Button signIn;
+
+    /*public void changeUserName(String login) {
+        //Node signNode = CalendarController.class.getElementById
+        signIn.setText(login);
+        signIn.setDisable(true);
+    }*/
 
     @FXML
     private void openWindowSignInOrUp() {

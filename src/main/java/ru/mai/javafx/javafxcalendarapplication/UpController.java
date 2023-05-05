@@ -2,11 +2,14 @@ package ru.mai.javafx.javafxcalendarapplication;
 
 import animations.Shake;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 import ru.mai.javafx.javafxcalendarapplication.modules.DatabaseHandler;
+
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -21,7 +24,6 @@ public class UpController {
     @FXML
     public TextField enterName;
 
-
     @FXML
     private Label justLabel;
 
@@ -34,8 +36,25 @@ public class UpController {
     @FXML
     private PasswordField newPassword;
 
+    private void showAlertWithHeaderTextError() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Problems with your Sign up");
+        alert.setHeaderText("This user already exists");
+        //alert.setContentText("Sign in is successfully!");
+        alert.showAndWait();
+    }
+
+    private void showAlertWithHeaderTextErrorPassword() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Password dont ravno");
+        alert.setHeaderText("-");
+        //alert.setContentText("Sign in is successfully!");
+        alert.showAndWait();
+    }
+
     @FXML
     void clickContinue () {
+        boolean isAfterSignUp = false;
         String userName = newLogin.getText().trim();
         String password = newPassword.getText();
 
@@ -45,7 +64,8 @@ public class UpController {
             System.out.println("Пользователь с таким логином и паролем уже существует");
         } else {
             signUp();
-            inController.loginUser(userName, password);
+            isAfterSignUp = true;
+            inController.loginUser(userName, password, isAfterSignUp);
         }
     }
     @FXML
@@ -68,6 +88,7 @@ public class UpController {
             if (!checkPass.equals(password)) {
                 passwordAnimation.playAnimation();
                 checkPasswordAnimation.playAnimation();
+                showAlertWithHeaderTextErrorPassword();
             } else {
                 dbHandler.sighUpUser(user);
                 btnContinue.getScene().getWindow().hide();
@@ -78,6 +99,7 @@ public class UpController {
             userNameAnimation.playAnimation();
             passwordAnimation.playAnimation();
             checkPasswordAnimation.playAnimation();
+            showAlertWithHeaderTextError();
         }
     }
     public boolean checkUserOnBD(String userName, String password) {

@@ -1,29 +1,18 @@
 package ru.mai.javafx.javafxcalendarapplication.modules;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import ru.mai.javafx.javafxcalendarapplication.GetPhotosController;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 
 public class MonthlyCalendar extends GridPane {
@@ -83,6 +72,12 @@ public class MonthlyCalendar extends GridPane {
                 button.setOnMouseClicked((event) -> {
                     Stage stagePhotos = new Stage();
                     stagePhotos.show();
+                    GetPhotosController gtf = new GetPhotosController();
+                    try {
+                        gtf.getPhotos();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
                 button.setPrefSize(sizeX / 3, sizeY / 5);
 
@@ -157,7 +152,7 @@ public class MonthlyCalendar extends GridPane {
                 }
                 isContains = false;
                 if (currentDay == day && currentYear == year && currentMonth.equals(month)) {
-                    btn.setStyle("-fx-background-color: #ffe2e2; -fx-border-color: blue");
+                    btn.setStyle("-fx-border-color: blue");
                 }
             } else {
                 btn.setDisable(true);
