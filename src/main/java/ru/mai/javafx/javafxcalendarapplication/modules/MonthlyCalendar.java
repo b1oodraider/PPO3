@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -152,7 +153,7 @@ public class MonthlyCalendar extends GridPane {
                 }
                 isContains = false;
                 if (currentDay == day && currentYear == year && currentMonth.equals(month)) {
-                    btn.setStyle("-fx-border-color: blue");
+                    btn.setStyle(btn.getStyle() + "; -fx-border-color: black");
                 }
             } else {
                 btn.setDisable(true);
