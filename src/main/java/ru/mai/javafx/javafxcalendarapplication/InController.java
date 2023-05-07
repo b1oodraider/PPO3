@@ -33,8 +33,7 @@ public class InController {
     private void showAlertWithHeaderText() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Sign in");
-        alert.setHeaderText("Sign in is successfully!");
-        //alert.setContentText("Sign in is successfully!");
+        alert.setHeaderText("Sign in was successful!");
 
         alert.showAndWait();
     }
@@ -42,16 +41,16 @@ public class InController {
     private void showAlertWithHeaderTextAlone() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Sign up");
-        alert.setHeaderText("Sign up is successfully! You sign in already!");
-        //alert.setContentText("Sign in is successfully!");
+        alert.setHeaderText("Sign up was successful! You've signed in already!");
+
         alert.showAndWait();
     }
 
     private void showAlertWithHeaderTextError() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Problems with your login or password");
-        alert.setHeaderText("YTy v chem-to oshibsya");
-        //alert.setContentText("Sign in is successfully!");
+        alert.setTitle("Problems with your sign in");
+        alert.setHeaderText("Username or password is incorrect");
+
         alert.showAndWait();
     }
 
@@ -92,10 +91,6 @@ public class InController {
                 } else {
                     showAlertWithHeaderTextAlone();
                 }
-                System.out.println("Авторизация прошла успешно");
-                //CalendarController calendarController = new CalendarController();
-                //calendarController.changeUserName(loginText);
-
             } else {
                 Shake loginAnimation = new Shake(enterLogin);
                 Shake passwordAnimation = new Shake(enterPassword);

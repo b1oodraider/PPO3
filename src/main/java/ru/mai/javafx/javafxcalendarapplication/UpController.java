@@ -2,14 +2,8 @@ package ru.mai.javafx.javafxcalendarapplication;
 
 import animations.Shake;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import ru.mai.javafx.javafxcalendarapplication.modules.DatabaseHandler;
-
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -38,34 +32,29 @@ public class UpController {
 
     private void showAlertWithHeaderTextError() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Problems with your Sign up");
+        alert.setTitle("Problems with your sign up");
         alert.setHeaderText("This user already exists");
-        //alert.setContentText("Sign in is successfully!");
+
         alert.showAndWait();
     }
 
     private void showAlertWithHeaderTextErrorPassword() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Password dont ravno");
-        alert.setHeaderText("-");
-        //alert.setContentText("Sign in is successfully!");
+        alert.setTitle("Problems with your sign up");
+        alert.setHeaderText("Please make sure your passwords match");
+
         alert.showAndWait();
     }
 
     @FXML
     void clickContinue () {
-        boolean isAfterSignUp = false;
         String userName = newLogin.getText().trim();
         String password = newPassword.getText();
 
-        InController inController = new InController();
-
         if (checkUserOnBD(userName, password) == true) {
-            System.out.println("Пользователь с таким логином и паролем уже существует");
+            showAlertWithHeaderTextError();
         } else {
             signUp();
-            isAfterSignUp = true;
-            inController.loginUser(userName, password, isAfterSignUp);
         }
     }
     @FXML
@@ -84,22 +73,22 @@ public class UpController {
 
         User user = new User(firstName, userName, password, checkPass);
 
-        if (!firstName.equals("") && !userName.equals("") && !password.equals("")) {
-            if (!checkPass.equals(password)) {
-                passwordAnimation.playAnimation();
-                checkPasswordAnimation.playAnimation();
-                showAlertWithHeaderTextErrorPassword();
-            } else {
-                dbHandler.sighUpUser(user);
-                btnContinue.getScene().getWindow().hide();
-                System.out.println("Регистрация прошла успешно");
-            }
-        } else {
+        if (firstName.equals("") | userName.equals("") | password.equals("")) {
             nameAnimation.playAnimation();
             userNameAnimation.playAnimation();
             passwordAnimation.playAnimation();
             checkPasswordAnimation.playAnimation();
-            showAlertWithHeaderTextError();
+        } else if (!checkPass.equals(password)) {
+            passwordAnimation.playAnimation();
+            checkPasswordAnimation.playAnimation();
+            showAlertWithHeaderTextErrorPassword();
+        } else {
+            dbHandler.sighUpUser(user);
+            btnContinue.getScene().getWindow().hide();
+
+            boolean isAfterSignUp = true;
+            InController inController = new InController();
+            inController.loginUser(userName, password, isAfterSignUp);
         }
     }
     public boolean checkUserOnBD(String userName, String password) {
