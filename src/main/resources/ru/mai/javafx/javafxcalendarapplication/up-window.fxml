@@ -33,7 +33,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <PasswordField fx:id="checkPassword" layoutX="131.0" layoutY="258.0" prefHeight="26.0" prefWidth="336.0" promptText="Repeat password..." AnchorPane.bottomAnchor="115.6" AnchorPane.leftAnchor="131.0" AnchorPane.rightAnchor="135.0" />
+            <PasswordField fx:id="confirmPassword" layoutX="131.0" layoutY="258.0" prefHeight="26.0" prefWidth="336.0" promptText="Repeat password..." AnchorPane.bottomAnchor="115.6" AnchorPane.leftAnchor="131.0" AnchorPane.rightAnchor="135.0" />
             <TextField fx:id="enterName" layoutX="131.0" layoutY="131.0" prefHeight="26.0" prefWidth="336.0" promptText="Enter your Name..." AnchorPane.bottomAnchor="243.6" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="136.0" />
           </children>
       </AnchorPane>

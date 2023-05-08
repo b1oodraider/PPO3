@@ -4,13 +4,11 @@ public class User {
     String firstName;
     String userName;
     String password;
-    String checkPassword;
 
-    public User(String firstName, String userName, String password, String checkPassword) {
+    public User(String firstName, String userName, String password) {
         this.firstName = firstName;
         this.userName = userName;
         this.password = password;
-        this.checkPassword = checkPassword;
     }
 
     public User() {
