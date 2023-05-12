@@ -13,7 +13,7 @@ public class UpController {
     private Button btnContinue;
 
     @FXML
-    private PasswordField checkPassword;
+    private PasswordField confirmPassword;
 
     @FXML
     public TextField enterName;
@@ -64,14 +64,14 @@ public class UpController {
         String firstName = enterName.getText().trim();
         String userName = newLogin.getText().trim();
         String password = newPassword.getText();
-        String checkPass = checkPassword.getText();
+        String checkPass = confirmPassword.getText();
 
         Shake nameAnimation = new Shake(enterName);
         Shake userNameAnimation = new Shake(newLogin);
         Shake passwordAnimation = new Shake(newPassword);
-        Shake checkPasswordAnimation = new Shake(checkPassword);
+        Shake checkPasswordAnimation = new Shake(confirmPassword);
 
-        User user = new User(firstName, userName, password, checkPass);
+        User user = new User(firstName, userName, password);
 
         if (firstName.equals("") | userName.equals("") | password.equals("")) {
             nameAnimation.playAnimation();
@@ -99,7 +99,6 @@ public class UpController {
         user.setUserName(userName);
         user.setPassword(password);
         ResultSet result = dbHandler.getUser(user);
-
         try {
             if (result.next()) {
                 return true;

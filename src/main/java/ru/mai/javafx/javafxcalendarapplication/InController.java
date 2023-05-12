@@ -78,9 +78,9 @@ public class InController {
         user.setUserName(loginText);
         user.setPassword(passwordText);
         ResultSet result = dbHandler.getUser(user);
-
         try {
             if (result.next()) {
+                System.out.println(result.getInt(1));
                 try {
                     btnLetSGo.getScene().getWindow().hide();
                 } catch (NullPointerException ignore) {
