@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -165,7 +166,13 @@ public class MonthlyCalendar extends GridPane {
                         stagePhotos.setScene(scene);
                         stagePhotos.show();
                     } else {
-                        Group root = new Group();
+                        Button button = new Button();
+                        button.setText("Save Notes");
+                        button.setLayoutY(400);
+                        TextArea text = new TextArea();
+                        text.setMaxHeight(300);
+                        text.setLayoutY(50);
+                        Group root = new Group(button, text);
                         Scene scene = new Scene(root);
                         Stage stagePhotos = new Stage();
                         stagePhotos.setWidth(500);
