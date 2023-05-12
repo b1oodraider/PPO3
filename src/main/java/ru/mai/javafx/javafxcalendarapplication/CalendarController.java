@@ -38,19 +38,17 @@ public class CalendarController {
     private Button prevMonthBtn;
 
     @FXML
-    private Button listBtn;
-
-    @FXML
-    private Label username;
-
-    @FXML
     private GridPane root;
 
     @FXML
     public Button signIn;
 
+    String btnUserStyle;
+
     /*public void changeUserName(String login) {
-        //Node signNode = CalendarController.class.getElementById
+        System.out.println(login);
+        signIn = new Button();
+        signIn.setStyle(btnUserStyle);
         signIn.setText(login);
         signIn.setDisable(true);
     }*/

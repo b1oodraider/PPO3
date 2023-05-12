@@ -12,19 +12,17 @@ public class GetPhotosController {
 
     private static final String GET_URL = "https://api.nasa.gov/planetary/apod?api_key=yIFGyr7sOvcg3QuXOh09rAHE7dZKpZIsCZNthFxu&date=";
 
-    /*private static String date = "";
+    private String description;
 
-    public GetPhotosController(String date) {
-        this.date = date;
-    }*/
-
-    public void getPhotos() throws IOException {
-        String date = "2023-04-28";
+    public void getPhotos(String date) throws IOException {
         String data = sendGET(date);
         System.out.println("GET DONE");
         getPic(data, date);
-        getExp(data);
+        this.description = getExp(data);
+    }
 
+    public String getDescription() {
+        return description;
     }
 
     private String sendGET(String date) throws IOException {
@@ -59,11 +57,10 @@ public class GetPhotosController {
             URL obj = new URL(STR1);
             InputStream is = obj.openStream();
             StringBuilder path = new StringBuilder();
-            path.append(GetPhotosController.class.getResource("pic2023-04-28.png").getPath());
-            //path.append("C/JavaTrainingLearning/projectCalendar/src/main/java/ru/mai/javafx/javafxcalendarapplication/picture/pic2023-04-28.png");
-            /*path.delete(path.length() - 17, path.length());
-            path.deleteCharAt(0);*/
-            path.append("pic" + date + getType(matcher.group()));
+            path.append(GetPhotosController.class.getResource("/pictures/date.txt"));
+            path.delete(path.length() - 8, path.length());
+            path.delete(0, 5);
+            path.append("/pic" + date + getType(matcher.group()));
             try {
                 Files.copy(is, new File(path.toString()).toPath());
             } catch (FileAlreadyExistsException e) {
@@ -75,14 +72,13 @@ public class GetPhotosController {
             System.out.println("not URL found");
         }
     }
-    private void getExp(String data) {
+    private String getExp(String data) {
         Pattern pattern = Pattern.compile("\"[A-Z].+?\\.\"");
         Matcher matcher = pattern.matcher(data);
         if (matcher.find()) {
-            final String STR1 = data.substring(matcher.start()+13, matcher.end());
-            System.out.println(STR1);
+            return (data.substring(matcher.start() + 1, matcher.end() - 1));
         } else {
-            System.out.println("not URL found");
+            return ("not text found");
         }
     }
 

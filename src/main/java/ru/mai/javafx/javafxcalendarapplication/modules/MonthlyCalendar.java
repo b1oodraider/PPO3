@@ -1,9 +1,16 @@
 package ru.mai.javafx.javafxcalendarapplication.modules;
 
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -11,9 +18,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import ru.mai.javafx.javafxcalendarapplication.GetPhotosController;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class MonthlyCalendar extends GridPane {
@@ -70,16 +75,6 @@ public class MonthlyCalendar extends GridPane {
             for (int j = 0; j < weekDays.length; ++j) {
                 Button button = new Button();
                 button.setCursor(Cursor.HAND);
-                button.setOnMouseClicked((event) -> {
-                    Stage stagePhotos = new Stage();
-                    stagePhotos.show();
-                    GetPhotosController gtf = new GetPhotosController();
-                    try {
-                        gtf.getPhotos();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
                 button.setPrefSize(sizeX / 3, sizeY / 5);
 
                 if (j > 4) {
@@ -131,12 +126,55 @@ public class MonthlyCalendar extends GridPane {
 
 
         int day;
-        String dateOfDay;
+        String dateOfDay = "";
+        String dateOfBtn = "";
         boolean isContains = false;
         int whatIsDate = 0;
         for (Button btn : buttons) {
             if (count >= numberOfDayOfWeek && count < countOfDays + numberOfDayOfWeek) {
                 day = count - numberOfDayOfWeek + 1;
+                dateOfBtn = String.valueOf(year) + "-" + String.valueOf(Arrays.asList(months).indexOf(month) + 1) + "-" + String.valueOf(day) ;
+                btn.setId(dateOfBtn);
+                btn.setOnMouseClicked((event) -> {
+                    if (event.getButton() == MouseButton.SECONDARY) {
+                        GetPhotosController gtf = new GetPhotosController();
+                        String description = "";
+                        try {
+                            gtf.getPhotos(btn.getId().toString());
+                            description = gtf.getDescription();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        Label label = new Label();
+                        label.setText(description);
+                        label.setMaxWidth(1200);
+                        label.setMaxHeight(100);
+                        label.setLayoutY(700);
+                        Image image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".jpg"));
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitHeight(600);
+                        imageView.setFitWidth(900);
+                        //imageView.setLayoutX(100);
+                        imageView.setLayoutY(100);
+                        Group root = new Group(label, imageView);
+                        Scene scene = new Scene(root);
+                        Stage stagePhotos = new Stage();
+                        stagePhotos.setWidth(1200);
+                        stagePhotos.setHeight(800);
+                        stagePhotos.setTitle("This day's photo");
+                        stagePhotos.setScene(scene);
+                        stagePhotos.show();
+                    } else {
+                        Group root = new Group();
+                        Scene scene = new Scene(root);
+                        Stage stagePhotos = new Stage();
+                        stagePhotos.setWidth(500);
+                        stagePhotos.setHeight(500);
+                        stagePhotos.setTitle("This day's notes");
+                        stagePhotos.setScene(scene);
+                        stagePhotos.show();
+                    }
+                });
                 dateOfDay = String.valueOf(day) + "-" + String.valueOf(Arrays.asList(months).indexOf(month) + 1);
                 for (int i = 0; i < dates.length; ++i) {
                     if (dateOfDay.equals(dates[i])) {
