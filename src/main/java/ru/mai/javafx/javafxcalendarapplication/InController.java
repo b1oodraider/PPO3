@@ -91,8 +91,6 @@ public class InController {
                 } else {
                     showAlertWithHeaderTextAlone();
                 }
-                //CalendarController calendarController = new CalendarController();
-                //calendarController.changeUserName(loginText);
             } else {
                 Shake loginAnimation = new Shake(enterLogin);
                 Shake passwordAnimation = new Shake(enterPassword);

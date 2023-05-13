@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import ru.mai.javafx.javafxcalendarapplication.GetPhotosController;
+import ru.mai.javafx.javafxcalendarapplication.Plan;
 
 import java.io.*;
 import java.util.*;
