@@ -9,11 +9,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import ru.mai.javafx.javafxcalendarapplication.modules.DatabaseHandler;
-import java.io.IOException;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class InController {
+
+    public int idUser = 0;
 
     @FXML
     private Button btnLetSGo;
@@ -72,15 +78,29 @@ public class InController {
         });
     }
 
-    public void loginUser(String loginText, String passwordText, boolean isAfterSignUp) {
+    public void loginUser(String loginText, String passwordText, boolean isAfterSignUp) throws FileNotFoundException {
         DatabaseHandler dbHandler = new DatabaseHandler();
         User user = new User();
         user.setUserName(loginText);
         user.setPassword(passwordText);
         ResultSet result = dbHandler.getUser(user);
+
+
+        String filePath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/userID";
+        File file = new File(filePath);
+        PrintWriter printWriter = new PrintWriter(file);
+
         try {
             if (result.next()) {
-                System.out.println(result.getInt(1));
+
+                try (BufferedWriter bf = Files.newBufferedWriter(Path.of(filePath),
+                        StandardOpenOption.TRUNCATE_EXISTING)) {
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                printWriter.println(result.getInt(1) + "");
+                printWriter.close();
                 try {
                     btnLetSGo.getScene().getWindow().hide();
                 } catch (NullPointerException ignore) {
@@ -104,7 +124,7 @@ public class InController {
     }
 
     @FXML
-    void clickBtnLetsGo(ActionEvent event) {
+    void clickBtnLetsGo(ActionEvent event) throws FileNotFoundException {
         String loginText = enterLogin.getText().trim();
         String passwordText = enterPassword.getText();
         boolean isAfterSignUp = false;

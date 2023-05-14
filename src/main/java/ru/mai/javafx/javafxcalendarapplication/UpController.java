@@ -4,6 +4,8 @@ import animations.Shake;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import ru.mai.javafx.javafxcalendarapplication.modules.DatabaseHandler;
+
+import java.io.FileNotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -47,7 +49,7 @@ public class UpController {
     }
 
     @FXML
-    void clickContinue () {
+    void clickContinue () throws FileNotFoundException {
         String userName = newLogin.getText().trim();
         String password = newPassword.getText();
 
@@ -58,7 +60,7 @@ public class UpController {
         }
     }
     @FXML
-    void signUp() {
+    void signUp() throws FileNotFoundException {
         DatabaseHandler dbHandler = new DatabaseHandler();
 
         String firstName = enterName.getText().trim();

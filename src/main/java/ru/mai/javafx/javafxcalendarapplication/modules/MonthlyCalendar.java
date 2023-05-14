@@ -1,5 +1,6 @@
 package ru.mai.javafx.javafxcalendarapplication.modules;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -18,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import ru.mai.javafx.javafxcalendarapplication.GetPhotosController;
+import ru.mai.javafx.javafxcalendarapplication.InController;
 import ru.mai.javafx.javafxcalendarapplication.Plan;
 
 import java.io.*;
@@ -181,6 +183,28 @@ public class MonthlyCalendar extends GridPane {
                         stagePhotos.setTitle("This day's notes");
                         stagePhotos.setScene(scene);
                         stagePhotos.show();
+
+
+                        // МЕТОД ДОБАВЛЕНИЯ ЗАМЕТКИ
+                        String filePath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/userID";
+                        int id = 0;
+                        File file = new File(filePath);
+                        try {
+                            Scanner scanner = new Scanner(file);
+                            id = scanner.nextInt();
+                        } catch (FileNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        int finalId = id;
+                        button.setOnAction(ActionEvent -> {
+                            DatabaseHandler dbHandler = new DatabaseHandler();
+                            String aue = text.getText();
+
+                            Plan plan = new Plan(finalId, aue);
+                            dbHandler.makeNote(plan);
+                        });
+
                     }
                 });
                 dateOfDay = String.valueOf(day) + "-" + String.valueOf(Arrays.asList(months).indexOf(month) + 1);
