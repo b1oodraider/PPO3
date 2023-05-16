@@ -85,22 +85,11 @@ public class InController {
         user.setPassword(passwordText);
         ResultSet result = dbHandler.getUser(user);
 
-
         String filePath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/userID";
-        File file = new File(filePath);
-        PrintWriter printWriter = new PrintWriter(file);
 
         try {
             if (result.next()) {
-
-                try (BufferedWriter bf = Files.newBufferedWriter(Path.of(filePath),
-                        StandardOpenOption.TRUNCATE_EXISTING)) {
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                printWriter.println(result.getInt(1) + "");
-                printWriter.close();
+                addIdTOFile(filePath, result);
                 try {
                     btnLetSGo.getScene().getWindow().hide();
                 } catch (NullPointerException ignore) {
@@ -121,6 +110,20 @@ public class InController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addIdTOFile(String path, ResultSet result) throws FileNotFoundException, SQLException {
+        File file = new File(path);
+        PrintWriter printWriter = new PrintWriter(file);
+
+        try (BufferedWriter bf = Files.newBufferedWriter(Path.of(path),
+                StandardOpenOption.TRUNCATE_EXISTING)) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        printWriter.println(result.getInt(1) + "");
+        printWriter.close();
     }
 
     @FXML

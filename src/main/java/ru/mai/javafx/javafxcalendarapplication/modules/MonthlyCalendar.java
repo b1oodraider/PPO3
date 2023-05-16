@@ -3,10 +3,7 @@ package ru.mai.javafx.javafxcalendarapplication.modules;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -23,6 +20,11 @@ import ru.mai.javafx.javafxcalendarapplication.InController;
 import ru.mai.javafx.javafxcalendarapplication.Plan;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class MonthlyCalendar extends GridPane {
@@ -128,7 +130,6 @@ public class MonthlyCalendar extends GridPane {
             throw new RuntimeException(e);
         }
 
-
         int day;
         String dateOfDay = "";
         String dateOfBtn = "";
@@ -170,6 +171,9 @@ public class MonthlyCalendar extends GridPane {
                         stagePhotos.show();
                     } else {
                         Button button = new Button();
+
+                        String dataHui = btn.getId();
+
                         button.setText("Save Notes");
                         button.setLayoutY(400);
                         TextArea text = new TextArea();
@@ -184,24 +188,26 @@ public class MonthlyCalendar extends GridPane {
                         stagePhotos.setScene(scene);
                         stagePhotos.show();
 
+                        String fileidPath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/userID";
 
-                        // МЕТОД ДОБАВЛЕНИЯ ЗАМЕТКИ
-                        String filePath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/userID";
-                        int id = 0;
-                        File file = new File(filePath);
+                        String fileDataPath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/dataOfNote";
+
                         try {
-                            Scanner scanner = new Scanner(file);
-                            id = scanner.nextInt();
+                            addDateTOFile(fileDataPath, btn);
                         } catch (FileNotFoundException e) {
+                            throw new RuntimeException(e);
+                        } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
 
-                        int finalId = id;
+
+
+                        // МЕТОД ДОБАВЛЕНИЯ ЗАМЕТКИ
                         button.setOnAction(ActionEvent -> {
                             DatabaseHandler dbHandler = new DatabaseHandler();
                             String aue = text.getText();
 
-                            Plan plan = new Plan(finalId, aue);
+                            Plan plan = new Plan(readIdFromFile(fileidPath), readDateFromFile(fileDataPath), aue);
                             dbHandler.makeNote(plan);
                         });
 
@@ -230,6 +236,46 @@ public class MonthlyCalendar extends GridPane {
             }
             ++count;
         }
+    }
+
+    public void addDateTOFile(String path, Button button) throws FileNotFoundException, SQLException {
+        File file = new File(path);
+        PrintWriter printWriter = new PrintWriter(file);
+
+        try (BufferedWriter bf = Files.newBufferedWriter(Path.of(path),
+                StandardOpenOption.TRUNCATE_EXISTING)) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        printWriter.println(button.getId());
+        printWriter.close();
+    }
+
+    public String readDateFromFile(String path) {
+        String date = "";
+        File file = new File(path);
+        try {
+            Scanner scanner = new Scanner(file);
+            date = scanner.nextLine();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String finalDate = date;
+        return finalDate;
+    }
+
+    public int readIdFromFile(String path) {
+        int id = 0;
+        File file = new File(path);
+        try {
+            Scanner scanner = new Scanner(file);
+            id = scanner.nextInt();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        int finalId = id;
+        return finalId;
     }
 
     public String getMonth() {

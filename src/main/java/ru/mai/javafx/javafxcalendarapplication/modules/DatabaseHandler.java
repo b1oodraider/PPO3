@@ -69,13 +69,14 @@ public class DatabaseHandler extends Configs {
     }
 
     public void makeNote(Plan plan) {
-        String insert = "INSERT INTO " + Const.PLAN_TABLE + "(" +
-                Const.USERS_ID + "," + Const.PLAN_NOTE + ")" + "VALUES(?,?)";
+        String insert = "INSERT INTO " + Const.PLAN_TABLE + "(" + Const.USERS_ID + "," +
+                Const.PLAN_DATE + "," + Const.PLAN_NOTE + ")" + "VALUES(?,?,?)";
 
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
             preparedStatement.setInt(1, plan.getId_user());
-            preparedStatement.setString(2, plan.getNote());
+            preparedStatement.setString(2, plan.getDate());
+            preparedStatement.setString(3, plan.getNote());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
