@@ -73,10 +73,10 @@ public class GetPhotosController {
         }
     }
     private String getExp(String data) {
-        Pattern pattern = Pattern.compile("\"[A-Z].+?\\.\"");
+        Pattern pattern = Pattern.compile("n\":\"[A-Z].+?\\.\"");
         Matcher matcher = pattern.matcher(data);
         if (matcher.find()) {
-            return (data.substring(matcher.start() + 1, matcher.end() - 1));
+            return (data.substring(matcher.start() + 4, matcher.end() - 1));
         } else {
             return ("not text found");
         }

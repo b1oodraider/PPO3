@@ -86,6 +86,8 @@ public class InController {
         ResultSet result = dbHandler.getUser(user);
 
         String filePath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/userID";
+        //String filePath = "/userID.txt";
+        //String filePath = getClass().getResource("/userID.txt").getPath();
 
         try {
             if (result.next()) {

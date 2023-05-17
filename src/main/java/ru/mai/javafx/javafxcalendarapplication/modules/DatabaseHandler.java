@@ -88,7 +88,8 @@ public class DatabaseHandler extends Configs {
 
     public ResultSet getNote(Plan plan) {
         ResultSet resultSet = null;
-        String select = "SELECT note FROM " + Const.PLAN_TABLE + " WHERE " + Const.USERS_ID + "?";
+        String select = "SELECT note FROM " + Const.PLAN_TABLE +
+                " WHERE " + Const.USERS_ID + "=? AND " + Const.PLAN_DATE + "=?";
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
             preparedStatement.setInt(1, plan.getId_user());

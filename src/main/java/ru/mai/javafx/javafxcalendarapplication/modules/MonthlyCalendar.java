@@ -152,28 +152,27 @@ public class MonthlyCalendar extends GridPane {
                         }
                         Label label = new Label();
                         label.setText(description);
-                        label.setMaxWidth(1200);
-                        label.setMaxHeight(100);
-                        label.setLayoutY(700);
+                        label.setMaxWidth(600);
+                        label.setMaxHeight(200);
+                        label.setLayoutY(450);
+                        label.setLayoutX(100);
+                        label.setWrapText(true);
                         Image image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".jpg"));
                         ImageView imageView = new ImageView(image);
-                        imageView.setFitHeight(600);
-                        imageView.setFitWidth(900);
-                        //imageView.setLayoutX(100);
-                        imageView.setLayoutY(100);
+                        imageView.setFitHeight(400);
+                        imageView.setFitWidth(600);
+                        imageView.setLayoutX(100);
+                        imageView.setLayoutY(50);
                         Group root = new Group(label, imageView);
                         Scene scene = new Scene(root);
                         Stage stagePhotos = new Stage();
-                        stagePhotos.setWidth(1200);
-                        stagePhotos.setHeight(800);
+                        stagePhotos.setWidth(800);
+                        stagePhotos.setHeight(700);
                         stagePhotos.setTitle("This day's photo");
                         stagePhotos.setScene(scene);
                         stagePhotos.show();
                     } else {
                         Button button = new Button();
-
-                        String dataHui = btn.getId();
-
                         button.setText("Save Notes");
                         button.setLayoutY(400);
                         TextArea text = new TextArea();
@@ -188,7 +187,7 @@ public class MonthlyCalendar extends GridPane {
                         stagePhotos.setScene(scene);
                         stagePhotos.show();
 
-                        String fileidPath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/userID";
+                        String fileIdPath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/userID";
 
                         String fileDataPath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/dataOfNote";
 
@@ -200,14 +199,12 @@ public class MonthlyCalendar extends GridPane {
                             throw new RuntimeException(e);
                         }
 
-
-
                         // МЕТОД ДОБАВЛЕНИЯ ЗАМЕТКИ
                         button.setOnAction(ActionEvent -> {
                             DatabaseHandler dbHandler = new DatabaseHandler();
                             String aue = text.getText();
 
-                            Plan plan = new Plan(readIdFromFile(fileidPath), readDateFromFile(fileDataPath), aue);
+                            Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
                             dbHandler.makeNote(plan);
                         });
 
