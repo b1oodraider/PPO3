@@ -212,19 +212,37 @@ public class MonthlyCalendar extends GridPane {
                         stagePhotos.setTitle("This day's notes");
                         stagePhotos.setScene(scene);
                         stagePhotos.show();
-                        button.setOnMouseClicked((eventSave) -> {// КНОПКА СЕЙВ
-                            if (radioButtonNotes.isSelected()) {
-                                text.setId("Notes");
-                            } else if (radioButtonTodo.isSelected()) {
-                                text.setId("Plan");
-                            } else {
-                                text.setId("Holiday");
-                            }
-                        });
 
                         String fileIdPath = "src/main/resources/userID.txt";
 
                         String fileDataPath = "src/main/resources/dataOfNote";
+
+                        button.setOnMouseClicked((eventSave) -> {// КНОПКА СЕЙВ
+                            if (radioButtonNotes.isSelected()) {
+                                text.setId("Notes");
+
+                                DatabaseHandler dbHandler = new DatabaseHandler();
+                                String aue = text.getText();
+                                Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
+                                dbHandler.makeNote(plan);
+
+                            } else if (radioButtonTodo.isSelected()) {
+                                text.setId("Plan");
+
+                                DatabaseHandler dbHandler = new DatabaseHandler();
+                                String aue = text.getText();
+                                Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
+                                dbHandler.makePlan(plan);
+
+                            } else {
+                                text.setId("Holiday");
+
+                                DatabaseHandler dbHandler = new DatabaseHandler();
+                                String aue = text.getText();
+                                Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
+                                dbHandler.makeHoliday(plan);
+                            }
+                        });
 
                         try {
                             addDateTOFile(fileDataPath, btn);
@@ -233,16 +251,6 @@ public class MonthlyCalendar extends GridPane {
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-
-                        // МЕТОД ДОБАВЛЕНИЯ ЗАМЕТКИ
-                        button.setOnAction(ActionEvent -> {
-                            DatabaseHandler dbHandler = new DatabaseHandler();
-                            String aue = text.getText();
-
-                            Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
-                            dbHandler.makeNote(plan);
-                        });
-
                     }
                 });
                 dateOfDay = String.valueOf(day) + "-" + String.valueOf(Arrays.asList(months).indexOf(month) + 1);

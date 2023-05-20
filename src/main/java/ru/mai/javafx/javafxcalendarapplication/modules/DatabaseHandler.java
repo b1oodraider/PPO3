@@ -70,7 +70,7 @@ public class DatabaseHandler extends Configs {
 
     public void makeNote(Plan plan) {
         String insert = "INSERT INTO " + Const.NOTE_TABLE + "(" + Const.USERS_ID + "," +
-                Const.PLAN_DATE + "," + Const.PLAN_NOTE + ")" + "VALUES(?,?,?)";
+                Const.NOTES_DATE + "," + Const.NOTES_NOTE + ")" + "VALUES(?,?,?)";
 
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
@@ -89,7 +89,75 @@ public class DatabaseHandler extends Configs {
     public ResultSet getNote(Plan plan) {
         ResultSet resultSet = null;
         String select = "SELECT note FROM " + Const.NOTE_TABLE +
-                " WHERE " + Const.USERS_ID + "=? AND " + Const.PLAN_DATE + "=?";
+                " WHERE " + Const.USERS_ID + "=? AND " + Const.NOTES_DATE + "=?";
+        try {
+            PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
+            preparedStatement.setInt(1, plan.getId_user());
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return resultSet;
+    }
+
+    public void makePlan(Plan plan) {
+        String insert = "INSERT INTO " + Const.PLANS_TABLE + "(" + Const.USERS_ID + "," +
+                Const.PLANS_DEADLINE + "," + Const.PLANS_PLAN + ")" + "VALUES(?,?,?)";
+        try {
+            PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
+            preparedStatement.setInt(1, plan.getId_user());
+            preparedStatement.setString(2, plan.getDate());
+            preparedStatement.setString(3, plan.getNote());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet getPlan(Plan plan) { // ПОЛУЧЕНИЕ ЗАДАЧИ ИЗ БД ПО ДАТЕ
+        ResultSet resultSet = null;
+        String select = "SELECT plan FROM " + Const.PLANS_TABLE +
+                " WHERE " + Const.USERS_ID + "=? AND " + Const.PLANS_DEADLINE + "=?";
+        try {
+            PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
+            preparedStatement.setInt(1, plan.getId_user());
+
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return resultSet;
+    }
+
+    public void makeHoliday(Plan plan) {
+        String insert = "INSERT INTO " + Const.HOLIDAYS_TABLE + "(" + Const.USERS_ID + "," +
+                Const.HOLIDAYS_DATE + "," + Const.HOLIDAYS_HOLIDAY + ")" + "VALUES(?,?,?)";
+        try {
+            PreparedStatement preparedStatement = getDbConnection().prepareStatement(insert);
+            preparedStatement.setInt(1, plan.getId_user());
+            preparedStatement.setString(2, plan.getDate());
+            preparedStatement.setString(3, plan.getNote());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet getHoliday(Plan plan) { // ПОЛУЧЕНИЕ ПРАЗДНИКА ИЗ БД ПО ДАТЕ
+        ResultSet resultSet = null;
+        String select = "SELECT holiday FROM " + Const.HOLIDAYS_TABLE +
+                " WHERE " + Const.USERS_ID + "=? AND " + Const.HOLIDAYS_DATE + "=?";
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
             preparedStatement.setInt(1, plan.getId_user());
@@ -103,3 +171,4 @@ public class DatabaseHandler extends Configs {
         return resultSet;
     }
 }
+
