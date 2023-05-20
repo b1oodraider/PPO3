@@ -155,7 +155,12 @@ public class MonthlyCalendar extends GridPane {
                         label.setLayoutY(450);
                         label.setLayoutX(100);
                         label.setWrapText(true);
-                        Image image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".jpg"));
+                        Image image;
+                        try {
+                            image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".jpg"));
+                        } catch (RuntimeException e) {
+                            image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".png"));
+                        }
                         ImageView imageView = new ImageView(image);
                         imageView.setFitHeight(400);
                         imageView.setFitWidth(600);
