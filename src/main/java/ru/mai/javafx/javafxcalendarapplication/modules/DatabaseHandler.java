@@ -69,7 +69,7 @@ public class DatabaseHandler extends Configs {
     }
 
     public void makeNote(Plan plan) {
-        String insert = "INSERT INTO " + Const.PLAN_TABLE + "(" + Const.USERS_ID + "," +
+        String insert = "INSERT INTO " + Const.NOTE_TABLE + "(" + Const.USERS_ID + "," +
                 Const.PLAN_DATE + "," + Const.PLAN_NOTE + ")" + "VALUES(?,?,?)";
 
         try {
@@ -88,7 +88,7 @@ public class DatabaseHandler extends Configs {
 
     public ResultSet getNote(Plan plan) {
         ResultSet resultSet = null;
-        String select = "SELECT note FROM " + Const.PLAN_TABLE +
+        String select = "SELECT note FROM " + Const.NOTE_TABLE +
                 " WHERE " + Const.USERS_ID + "=? AND " + Const.PLAN_DATE + "=?";
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
