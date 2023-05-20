@@ -85,9 +85,7 @@ public class InController {
         user.setPassword(passwordText);
         ResultSet result = dbHandler.getUser(user);
 
-        String filePath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/userID";
-        //String filePath = "/userID.txt";
-        //String filePath = getClass().getResource("/userID.txt").getPath();
+        String filePath = "src/main/resources/userID.txt";
 
         try {
             if (result.next()) {

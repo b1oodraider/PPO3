@@ -34,7 +34,7 @@
                      </image></ImageView>
                </children></AnchorPane>
          </children></AnchorPane>
-      <GridPane fx:id="root" alignment="CENTER" gridLinesVisible="true" layoutX="50.0" layoutY="80.0" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #dfffff;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="80.0">
+      <GridPane fx:id="root" alignment="CENTER" gridLinesVisible="true" layoutX="50.0" layoutY="80.0" maxHeight="500.0" maxWidth="700.0" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #ffecb9;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="80.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="700.0" minWidth="10.0" prefWidth="300.0" />
         </columnConstraints>

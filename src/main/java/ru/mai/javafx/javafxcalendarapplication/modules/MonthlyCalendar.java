@@ -4,9 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -68,7 +66,7 @@ public class MonthlyCalendar extends GridPane {
             Label label = new Label(weekDays[i]);
             label.setPrefSize(sizeX / 3, sizeY / 5);
             label.setAlignment(Pos.CENTER);
-            label.setFont(Font.font(15));
+            label.setFont(Font.font(20));
 
             if (i > 4) {
                 label.setTextFill(Color.RED);
@@ -172,24 +170,56 @@ public class MonthlyCalendar extends GridPane {
                         stagePhotos.setScene(scene);
                         stagePhotos.show();
                     } else {
+                        RadioButton radioButtonNotes = new RadioButton();
+                        radioButtonNotes.setText("Note");
+                        radioButtonNotes.setLayoutY(275);
+                        RadioButton radioButtonTodo = new RadioButton();
+                        radioButtonTodo.setText("To-do");
+                        radioButtonTodo.setLayoutY(325);
+                        RadioButton radioButtonHoliday = new RadioButton();
+                        radioButtonHoliday.setLayoutY(375);
+                        radioButtonHoliday.setText("Holiday");
+                        ToggleGroup radioGroup = new ToggleGroup();
+                        radioButtonNotes.setToggleGroup(radioGroup);
+                        radioButtonTodo.setToggleGroup(radioGroup);
+                        radioButtonHoliday.setToggleGroup(radioGroup);
                         Button button = new Button();
-                        button.setText("Save Notes");
-                        button.setLayoutY(400);
+                        button.setText("Save");
+                        button.setLayoutY(425);
                         TextArea text = new TextArea();
-                        text.setMaxHeight(300);
-                        text.setLayoutY(50);
-                        Group root = new Group(button, text);
+                        text.setPromptText("Enter your text");
+                        text.setWrapText(true);
+                        text.setLayoutY(25);
+                        text.setPrefHeight(200);
+                        text.setPrefWidth(450);
+                        if (radioButtonNotes.isSelected()) {
+                            text.setId("Notes");
+                        } else if (radioButtonTodo.isSelected()) {
+                            text.setId("Plan");
+                        } else {
+                            text.setId("Holiday");
+                        }
+                        Group root = new Group(button, text, radioButtonHoliday, radioButtonNotes, radioButtonTodo);
                         Scene scene = new Scene(root);
                         Stage stagePhotos = new Stage();
-                        stagePhotos.setWidth(500);
+                        stagePhotos.setWidth(450);
                         stagePhotos.setHeight(500);
                         stagePhotos.setTitle("This day's notes");
                         stagePhotos.setScene(scene);
                         stagePhotos.show();
+                        button.setOnMouseClicked((eventSave) -> {// КНОПКА СЕЙВ
+                            if (radioButtonNotes.isSelected()) {
+                                text.setId("Notes");
+                            } else if (radioButtonTodo.isSelected()) {
+                                text.setId("Plan");
+                            } else {
+                                text.setId("Holiday");
+                            }
+                        });
 
-                        String fileIdPath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/userID";
+                        String fileIdPath = "src/main/resources/userID.txt";
 
-                        String fileDataPath = "C:/Users/nokia/OneDrive/Документы/GitHub/project_calendar/src/main/resources/dataOfNote";
+                        String fileDataPath = "src/main/resources/dataOfNote";
 
                         try {
                             addDateTOFile(fileDataPath, btn);
@@ -287,4 +317,3 @@ public class MonthlyCalendar extends GridPane {
         return months;
     }
 }
-
