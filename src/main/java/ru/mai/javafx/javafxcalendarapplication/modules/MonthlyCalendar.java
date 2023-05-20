@@ -139,120 +139,166 @@ public class MonthlyCalendar extends GridPane {
                 dateOfBtn = String.valueOf(year) + "-" + String.valueOf(Arrays.asList(months).indexOf(month) + 1) + "-" + String.valueOf(day) ;
                 btn.setId(dateOfBtn);
                 btn.setOnMouseClicked((event) -> {
-                    if (event.getButton() == MouseButton.SECONDARY) {
-                        GetPhotosController gtf = new GetPhotosController();
-                        String description = "";
-                        try {
-                            gtf.getPhotos(btn.getId().toString());
-                            description = gtf.getDescription();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        Label label = new Label();
-                        label.setText(description);
-                        label.setMaxWidth(600);
-                        label.setMaxHeight(200);
-                        label.setLayoutY(450);
-                        label.setLayoutX(100);
-                        label.setWrapText(true);
-                        Image image;
-                        try {
-                            image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".jpg"));
-                        } catch (RuntimeException e) {
-                            image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".png"));
-                        }
-                        ImageView imageView = new ImageView(image);
-                        imageView.setFitHeight(400);
-                        imageView.setFitWidth(600);
-                        imageView.setLayoutX(100);
-                        imageView.setLayoutY(50);
-                        Group root = new Group(label, imageView);
-                        Scene scene = new Scene(root);
-                        Stage stagePhotos = new Stage();
-                        stagePhotos.setWidth(800);
-                        stagePhotos.setHeight(700);
-                        stagePhotos.setTitle("This day's photo");
-                        stagePhotos.setScene(scene);
-                        stagePhotos.show();
-                    } else {
-                        RadioButton radioButtonNotes = new RadioButton();
-                        radioButtonNotes.setText("Note");
-                        radioButtonNotes.setLayoutY(275);
-                        RadioButton radioButtonTodo = new RadioButton();
-                        radioButtonTodo.setText("To-do");
-                        radioButtonTodo.setLayoutY(325);
-                        RadioButton radioButtonHoliday = new RadioButton();
-                        radioButtonHoliday.setLayoutY(375);
-                        radioButtonHoliday.setText("Holiday");
-                        ToggleGroup radioGroup = new ToggleGroup();
-                        radioButtonNotes.setToggleGroup(radioGroup);
-                        radioButtonTodo.setToggleGroup(radioGroup);
-                        radioButtonHoliday.setToggleGroup(radioGroup);
-                        Button button = new Button();
-                        button.setText("Save");
-                        button.setLayoutY(425);
-                        TextArea text = new TextArea();
-                        text.setPromptText("Enter your text");
-                        text.setWrapText(true);
-                        text.setLayoutY(25);
-                        text.setPrefHeight(200);
-                        text.setPrefWidth(450);
-                        if (radioButtonNotes.isSelected()) {
-                            text.setId("Notes");
-                        } else if (radioButtonTodo.isSelected()) {
-                            text.setId("Plan");
-                        } else {
-                            text.setId("Holiday");
-                        }
-                        Group root = new Group(button, text, radioButtonHoliday, radioButtonNotes, radioButtonTodo);
-                        Scene scene = new Scene(root);
-                        Stage stagePhotos = new Stage();
-                        stagePhotos.setWidth(450);
-                        stagePhotos.setHeight(500);
-                        stagePhotos.setTitle("This day's notes");
-                        stagePhotos.setScene(scene);
-                        stagePhotos.show();
-
-                        String fileIdPath = "src/main/resources/userID.txt";
-
-                        String fileDataPath = "src/main/resources/dataOfNote";
-
-                        button.setOnMouseClicked((eventSave) -> {// КНОПКА СЕЙВ
-                            if (radioButtonNotes.isSelected()) {
-                                text.setId("Notes");
-
-                                DatabaseHandler dbHandler = new DatabaseHandler();
-                                String aue = text.getText();
-                                Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
-                                dbHandler.makeNote(plan);
-
-                            } else if (radioButtonTodo.isSelected()) {
-                                text.setId("Plan");
-
-                                DatabaseHandler dbHandler = new DatabaseHandler();
-                                String aue = text.getText();
-                                Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
-                                dbHandler.makePlan(plan);
-
+                            if (event.getButton() == MouseButton.SECONDARY) {
+                                GetPhotosController gtf = new GetPhotosController();
+                                String description = "";
+                                try {
+                                    gtf.getPhotos(btn.getId().toString());
+                                    description = gtf.getDescription();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                Label label = new Label();
+                                label.setText(description);
+                                label.setMaxWidth(600);
+                                label.setMaxHeight(200);
+                                label.setLayoutY(450);
+                                label.setLayoutX(100);
+                                label.setWrapText(true);
+                                Image image;
+                                try {
+                                    image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".jpg"));
+                                } catch (RuntimeException e) {
+                                    image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".png"));
+                                }
+                                ImageView imageView = new ImageView(image);
+                                imageView.setFitHeight(400);
+                                imageView.setFitWidth(600);
+                                imageView.setLayoutX(100);
+                                imageView.setLayoutY(50);
+                                Group root = new Group(label, imageView);
+                                Scene scene = new Scene(root);
+                                Stage stagePhotos = new Stage();
+                                stagePhotos.setWidth(800);
+                                stagePhotos.setHeight(700);
+                                stagePhotos.setTitle("This day's photo");
+                                stagePhotos.setScene(scene);
+                                stagePhotos.show();
                             } else {
-                                text.setId("Holiday");
+                                Button buttonLeaveEntry = new Button();
+                                buttonLeaveEntry.setText("Leave an entry for the day");
+                                buttonLeaveEntry.setLayoutY(50);
+                                Button buttonShowEntry = new Button();
+                                buttonShowEntry.setText("Show an entry for the day");
+                                buttonShowEntry.setLayoutY(100);
+                                Group rootChoice = new Group(buttonLeaveEntry, buttonShowEntry);
+                                Scene sceneChoice = new Scene(rootChoice);
+                                Stage stageChoice = new Stage();
+                                stageChoice.setTitle("Choice");
+                                stageChoice.setHeight(300);
+                                stageChoice.setWidth(300);
+                                stageChoice.setScene(sceneChoice);
+                                stageChoice.show();
+                                buttonLeaveEntry.setOnMouseClicked((eventLeave) -> {
+                                    stageChoice.hide();
+                                    RadioButton radioButtonNotes = new RadioButton();
+                                    radioButtonNotes.setText("Note");
+                                    radioButtonNotes.setLayoutY(275);
+                                    RadioButton radioButtonTodo = new RadioButton();
+                                    radioButtonTodo.setText("To-do");
+                                    radioButtonTodo.setLayoutY(325);
+                                    RadioButton radioButtonHoliday = new RadioButton();
+                                    radioButtonHoliday.setLayoutY(375);
+                                    radioButtonHoliday.setText("Holiday");
+                                    ToggleGroup radioGroup = new ToggleGroup();
+                                    radioButtonNotes.setToggleGroup(radioGroup);
+                                    radioButtonTodo.setToggleGroup(radioGroup);
+                                    radioButtonHoliday.setToggleGroup(radioGroup);
+                                    Button buttonSave = new Button();
+                                    buttonSave.setText("Save");
+                                    buttonSave.setLayoutY(425);
+                                    TextArea text = new TextArea();
+                                    text.setPromptText("Enter your text");
+                                    text.setWrapText(true);
+                                    text.setLayoutY(25);
+                                    text.setPrefHeight(200);
+                                    text.setPrefWidth(450);
+                                    if (radioButtonNotes.isSelected()) {
+                                        text.setId("Notes");
+                                    } else if (radioButtonTodo.isSelected()) {
+                                        text.setId("Plan");
+                                    } else {
+                                        text.setId("Holiday");
+                                    }
+                                    Group root = new Group(buttonSave, text, radioButtonHoliday, radioButtonNotes, radioButtonTodo);
+                                    Scene scene = new Scene(root);
+                                    Stage stagePhotos = new Stage();
+                                    stagePhotos.setWidth(450);
+                                    stagePhotos.setHeight(500);
+                                    stagePhotos.setTitle("This day's notes");
+                                    stagePhotos.setScene(scene);
+                                    stagePhotos.show();
 
-                                DatabaseHandler dbHandler = new DatabaseHandler();
-                                String aue = text.getText();
-                                Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
-                                dbHandler.makeHoliday(plan);
+                                    String fileIdPath = "src/main/resources/userID.txt";
+
+                                    String fileDataPath = "src/main/resources/dataOfNote";
+
+                                    buttonSave.setOnMouseClicked((eventSave) -> {// КНОПКА СЕЙВ
+                                        if (radioButtonNotes.isSelected()) {
+                                            text.setId("Notes");
+
+                                            DatabaseHandler dbHandler = new DatabaseHandler();
+                                            String aue = text.getText();
+                                            Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
+                                            dbHandler.makeNote(plan);
+
+                                        } else if (radioButtonTodo.isSelected()) {
+                                            text.setId("Plan");
+
+                                            DatabaseHandler dbHandler = new DatabaseHandler();
+                                            String aue = text.getText();
+                                            Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
+                                            dbHandler.makePlan(plan);
+
+                                        } else {
+                                            text.setId("Holiday");
+
+                                            DatabaseHandler dbHandler = new DatabaseHandler();
+                                            String aue = text.getText();
+                                            Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
+                                            dbHandler.makeHoliday(plan);
+                                        }
+                                    });
+
+                                    try {
+                                        addDateTOFile(fileDataPath, btn);
+                                    } catch (FileNotFoundException e) {
+                                        throw new RuntimeException(e);
+                                    } catch (SQLException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
+                                buttonShowEntry.setOnMouseClicked((eventShow) -> {
+                                    Label labelHeadNotes = new Label("Notes:");
+                                    Label labelNotes = new Label();
+                                    labelNotes.setWrapText(true);
+                                    labelNotes.setLayoutY(30);
+                                    labelNotes.setText("NOTES IS HERE");
+                                    labelNotes.setStyle("-fx-border-color: black");
+                                    Label labelHeadPlans = new Label("Plans");
+                                    labelHeadPlans.setLayoutY(70);
+                                    Label labelPlans = new Label();
+                                    labelPlans.setWrapText(true);
+                                    labelPlans.setLayoutY(100);
+                                    labelPlans.setText("Plans IS HERE");
+                                    Label labelHeadHolidays = new Label("Holidays");
+                                    labelHeadHolidays.setLayoutY(140);
+                                    Label labelHolidays = new Label();
+                                    labelHolidays.setWrapText(true);
+                                    labelHolidays.setLayoutY(170);
+                                    labelHolidays.setText("HOLIDAYS IS HERE");
+                                    Group rootShow = new Group(labelHeadNotes, labelHeadPlans, labelHeadHolidays, labelNotes, labelPlans, labelHolidays);
+                                    Scene sceneShow = new Scene(rootShow);
+                                    Stage stageShow = new Stage();
+                                    stageShow.setTitle("ShowEntry");
+                                    stageShow.setScene(sceneShow);
+                                    stageShow.setHeight(300);
+                                    stageShow.setWidth(300);
+                                    stageShow.show();
+                                    stageChoice.hide();
+                                });
                             }
                         });
-
-                        try {
-                            addDateTOFile(fileDataPath, btn);
-                        } catch (FileNotFoundException e) {
-                            throw new RuntimeException(e);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                });
                 dateOfDay = String.valueOf(day) + "-" + String.valueOf(Arrays.asList(months).indexOf(month) + 1);
                 for (int i = 0; i < dates.length; ++i) {
                     if (dateOfDay.equals(dates[i])) {
