@@ -292,20 +292,23 @@ public class MonthlyCalendar extends GridPane {
                                     labelNotes.setLayoutY(30);
                                     labelNotes.setText("NOTES IS HERE");
                                     labelNotes.setStyle("-fx-border-color: black");
+                                    Button buttonChangeNotes = new Button();//СДЕЛАЙ КНОПКИ ПОД КАЖДЫМ ЛЕЙБЛОМ
                                     Label labelHeadPlans = new Label("Plans");
                                     labelHeadPlans.setLayoutY(70);
                                     Label labelPlans = new Label();
                                     labelPlans.setWrapText(true);
                                     labelPlans.setLayoutY(100);
                                     labelPlans.setText("Plans IS HERE");
+                                    labelPlans.setStyle("-fx-border-color: black");
                                     Label labelHeadHolidays = new Label("Holidays");
                                     labelHeadHolidays.setLayoutY(140);
                                     Label labelHolidays = new Label();
                                     labelHolidays.setWrapText(true);
                                     labelHolidays.setLayoutY(170);
                                     labelHolidays.setText("HOLIDAYS IS HERE");
+                                    labelHolidays.setStyle("-fx-border-color: black");
                                     Group rootShow = new Group(labelHeadNotes, labelHeadPlans, labelHeadHolidays, labelNotes, labelPlans, labelHolidays);
-                                    Scene sceneShow = new Scene(rootShow);
+                                    Scene sceneShow = new Scene(rootShow, Color.CYAN);
                                     Stage stageShow = new Stage();
                                     stageShow.setTitle("ShowEntry");
                                     stageShow.setScene(sceneShow);
