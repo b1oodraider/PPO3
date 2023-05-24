@@ -36,7 +36,7 @@ public class InController {
     @FXML
     private Button signUp;
 
-    private void showAlertWithHeaderText() {
+    private void showNotificationAboutSignIn() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Sign in");
         alert.setHeaderText("Sign in was successful!");
@@ -44,7 +44,7 @@ public class InController {
         alert.showAndWait();
     }
 
-    private void showAlertWithHeaderTextAlone() {
+    private void showNotificationAboutSingUp() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Sign up");
         alert.setHeaderText("Sign up was successful! You've signed in already!");
@@ -52,7 +52,7 @@ public class InController {
         alert.showAndWait();
     }
 
-    private void showAlertWithHeaderTextError() {
+    private void showNotificationIfPasswordOrUsernameIsIncorrect() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Problems with your sign in");
         alert.setHeaderText("Username or password is incorrect");
@@ -96,16 +96,16 @@ public class InController {
 
                 }
                 if (!isAfterSignUp) {
-                    showAlertWithHeaderText();
+                    showNotificationAboutSignIn();
                 } else {
-                    showAlertWithHeaderTextAlone();
+                    showNotificationAboutSingUp();
                 }
             } else {
                 Shake loginAnimation = new Shake(enterLogin);
                 Shake passwordAnimation = new Shake(enterPassword);
                 loginAnimation.playAnimation();
                 passwordAnimation.playAnimation();
-                showAlertWithHeaderTextError();
+                showNotificationIfPasswordOrUsernameIsIncorrect();
             }
         } catch (SQLException e) {
             e.printStackTrace();

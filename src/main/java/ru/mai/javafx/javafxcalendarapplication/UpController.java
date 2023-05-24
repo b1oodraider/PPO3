@@ -32,7 +32,7 @@ public class UpController {
     @FXML
     private PasswordField newPassword;
 
-    private void showAlertWithHeaderTextError() {
+    private void showNotificationIfUserAlreadyExists() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Problems with your sign up");
         alert.setHeaderText("This user already exists");
@@ -40,10 +40,18 @@ public class UpController {
         alert.showAndWait();
     }
 
-    private void showAlertWithHeaderTextErrorPassword() {
+    private void showNotificationIfPasswordsDoNotMatch() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Problems with your sign up");
         alert.setHeaderText("Please make sure your passwords match");
+
+        alert.showAndWait();
+    }
+
+    private void showNotificationIfAFieldIsNotFilled() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Problems with your sign up");
+        alert.setHeaderText("Please make sure all fields are filled");
 
         alert.showAndWait();
     }
@@ -54,7 +62,7 @@ public class UpController {
         String password = newPassword.getText();
 
         if (checkUserOnBD(userName, password) == true) {
-            showAlertWithHeaderTextError();
+            showNotificationIfUserAlreadyExists();
         } else {
             signUp();
         }
@@ -80,10 +88,12 @@ public class UpController {
             userNameAnimation.playAnimation();
             passwordAnimation.playAnimation();
             checkPasswordAnimation.playAnimation();
+
+            showNotificationIfAFieldIsNotFilled();
         } else if (!checkPass.equals(password)) {
             passwordAnimation.playAnimation();
             checkPasswordAnimation.playAnimation();
-            showAlertWithHeaderTextErrorPassword();
+            showNotificationIfPasswordsDoNotMatch();
         } else {
             dbHandler.sighUpUser(user);
             btnContinue.getScene().getWindow().hide();

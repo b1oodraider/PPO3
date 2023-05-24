@@ -13,7 +13,6 @@ public class DatabaseHandler extends Configs {
 
     public Connection getDbConnection() throws SQLException {
         String connectionString = "jdbc:mysql://db4free.net:3306/users_info";
-
         dbConnection = DriverManager.getConnection(connectionString, dbUser, dbPass);
         return dbConnection;
     }
