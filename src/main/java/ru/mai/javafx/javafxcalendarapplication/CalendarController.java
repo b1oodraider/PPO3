@@ -27,6 +27,9 @@ public class CalendarController {
     int year;
 
     @FXML
+    private Button btnExit;
+
+    @FXML
     private ImageView imageUser;
 
     @FXML
@@ -39,20 +42,10 @@ public class CalendarController {
     private Button prevMonthBtn;
 
     @FXML
-    private GridPane root;
+    public GridPane root;
 
     @FXML
     public Button signIn;
-
-    String btnUserStyle;
-
-    /*public void changeUserName(String login) {
-        System.out.println(login);
-        signIn = new Button();
-        signIn.setStyle(btnUserStyle);
-        signIn.setText(login);
-        signIn.setDisable(true);
-    }*/
 
     @FXML
     private void openWindowSignInOrUp() {
@@ -72,105 +65,75 @@ public class CalendarController {
     };
 
     @FXML
-    private Button userNotes;
-
-    @FXML
-    private void openUserNotes() {
-        userNotes.setOnMouseClicked((event) -> {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("notes-window.fxml"));
-            try {
-                loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-        });
-    };
-
-    @FXML
-    private Button userTodo;
-
-    @FXML
-    private void openUserTodo() {
-        userTodo.setOnMouseClicked((event) -> {
-            FXMLLoader loaderTodo = new FXMLLoader();
-            loaderTodo.setLocation(getClass().getResource("todo-window.fxml"));
-            try {
-                loaderTodo.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Parent rootTodo = loaderTodo.getRoot();
-            Stage stageTodo = new Stage();
-            stageTodo.setScene(new Scene(rootTodo));
-            stageTodo.show();
-        });
-    };
-
-    @FXML
-    private Button userSettings;
-
-    @FXML
-    private void openUserSettings() {
-        userSettings.setOnMouseClicked((event) -> {
-            FXMLLoader loaderSettings = new FXMLLoader();
-            loaderSettings.setLocation(getClass().getResource("settings-window.fxml"));
-            try {
-                loaderSettings.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Parent rootSettings = loaderSettings.getRoot();
-            Stage stageSettings = new Stage();
-            stageSettings.setScene(new Scene(rootSettings));
-            stageSettings.show();
-        });
-    };
-
-    @FXML
-    private void initialize() {
+    public void initialize() {
         monthlyCalendar = new MonthlyCalendar();
-        month = monthlyCalendar.getMonth();
-        months = monthlyCalendar.getMonths();
-        year = monthlyCalendar.getYear();
-        root.add(monthlyCalendar, 0, 1);
-        monthlyCalendar.setAlignment(Pos.CENTER);
-        monthInd.setText(month + " - " + year);
+        if (checkLogin()) {
+            month = monthlyCalendar.getMonth();
+            months = monthlyCalendar.getMonths();
+            year = monthlyCalendar.getYear();
+            root.add(monthlyCalendar, 0, 1);
+            monthlyCalendar.setAlignment(Pos.CENTER);
+            monthInd.setText(month + " - " + year);
+        } else {
+            month = monthlyCalendar.getMonth();
+            year = monthlyCalendar.getYear();
+            monthInd.setText(month + " - " + year);
+        }
     }
 
     @FXML
     private void onPrevBtnClicked() {
-        root.getChildren().remove(monthlyCalendar);
-        String currentMonth = monthlyCalendar.getMonth();
-        if (month.equals(months[0])){
-            month = months[months.length - 1];
-            --year;
+        if (checkLogin()) {
+            root.getChildren().remove(monthlyCalendar);
+            String currentMonth = monthlyCalendar.getMonth();
+            if (month.equals(months[0])){
+                month = months[months.length - 1];
+                --year;
+            } else {
+                month = months[Arrays.asList(months).indexOf(currentMonth) - 1];
+            }
+            monthlyCalendar = new MonthlyCalendar(month, year);
+            root.add(monthlyCalendar, 0, 1);
+            monthlyCalendar.setAlignment(Pos.CENTER);
+            monthInd.setText(month + " - " + year);
         } else {
-            month = months[Arrays.asList(months).indexOf(currentMonth) - 1];
+            System.out.print("Please login to use full version");
         }
-        monthlyCalendar = new MonthlyCalendar(month, year);
-        root.add(monthlyCalendar, 0, 1);
-        monthlyCalendar.setAlignment(Pos.CENTER);
-        monthInd.setText(month + " - " + year);
     }
 
     @FXML
     private void onNextBtnClicked() {
-        root.getChildren().remove(monthlyCalendar);
-        String currentMonth = monthlyCalendar.getMonth();
-        if (month.equals(months[months.length - 1])){
-            month = months[0];
-            ++year;
-        } else {
-            month = months[Arrays.asList(months).indexOf(currentMonth) + 1];
+        if (checkLogin()) {
+            root.getChildren().remove(monthlyCalendar);
+            String currentMonth = monthlyCalendar.getMonth();
+            if (month.equals(months[months.length - 1])){
+                month = months[0];
+                ++year;
+            } else {
+                month = months[Arrays.asList(months).indexOf(currentMonth) + 1];
+            }
+            monthlyCalendar = new MonthlyCalendar(month, year);
+            root.add(monthlyCalendar, 0, 1);
+            monthlyCalendar.setAlignment(Pos.CENTER);
+            monthInd.setText(month + " - " + year);
         }
-        monthlyCalendar = new MonthlyCalendar(month, year);
-        root.add(monthlyCalendar, 0, 1);
-        monthlyCalendar.setAlignment(Pos.CENTER);
-        monthInd.setText(month + " - " + year);
+    }
+
+
+    @FXML
+    void userExit() {
+    }
+
+    public boolean checkLogin(){
+        File file = new File("src/main/resources/userID.txt");
+        try {
+            Scanner scanner = new Scanner(file);
+            if (scanner.nextInt() != 0) {
+                return true;
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 }

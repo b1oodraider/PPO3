@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import ru.mai.javafx.javafxcalendarapplication.modules.DatabaseHandler;
+import ru.mai.javafx.javafxcalendarapplication.modules.MonthlyCalendar;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -100,6 +101,8 @@ public class InController {
                 } else {
                     showNotificationAboutSingUp();
                 }
+                CalendarController calendarController = new CalendarController();
+                calendarController.initialize();
             } else {
                 Shake loginAnimation = new Shake(enterLogin);
                 Shake passwordAnimation = new Shake(enterPassword);

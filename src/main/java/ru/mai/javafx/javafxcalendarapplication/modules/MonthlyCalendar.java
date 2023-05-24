@@ -16,6 +16,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import ru.mai.javafx.javafxcalendarapplication.CalendarController;
 import ru.mai.javafx.javafxcalendarapplication.GetPhotosController;
 import ru.mai.javafx.javafxcalendarapplication.InController;
 import ru.mai.javafx.javafxcalendarapplication.Plan;
@@ -55,7 +56,7 @@ public class MonthlyCalendar extends GridPane {
         fillContent();
     }
 
-    private void fillContent() {
+    public void fillContent() {
         months = new String[] {"January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"};
 
@@ -83,6 +84,14 @@ public class MonthlyCalendar extends GridPane {
                 Button button = new Button();
                 button.setCursor(Cursor.HAND);
                 button.setPrefSize(sizeX / 3, sizeY / 5);
+                CalendarController calendarController = new CalendarController();
+                if (calendarController.checkLogin()) {
+                    button.setDisable(false);
+                    System.out.println("U LOGIN");
+                } else {
+                    button.setDisable(true);
+                    System.out.println("NOT");
+                }
 
                 if (j > 4) {
                     button.setTextFill(Color.RED);
@@ -259,6 +268,8 @@ public class MonthlyCalendar extends GridPane {
                                             Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
                                             dbHandler.makeNote(plan);
 
+                                            showNotificationAboutCreatingNote(readDateFromFile(fileDataPath));
+
                                         } else if (radioButtonTodo.isSelected()) {
                                             text.setId("Plan");
 
@@ -267,6 +278,8 @@ public class MonthlyCalendar extends GridPane {
                                             Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
                                             dbHandler.makePlan(plan);
 
+                                            showNotificationAboutCreatingPlan(readDateFromFile(fileDataPath));
+
                                         } else {
                                             text.setId("Holiday");
 
@@ -274,6 +287,8 @@ public class MonthlyCalendar extends GridPane {
                                             String aue = text.getText();
                                             Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
                                             dbHandler.makeHoliday(plan);
+
+                                            showNotificationAboutCreatingHoliday(readDateFromFile(fileDataPath));
                                         }
                                     });
 
@@ -394,5 +409,29 @@ public class MonthlyCalendar extends GridPane {
 
     public String[] getMonths() {
         return months;
+    }
+
+    private void showNotificationAboutCreatingNote(String date) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Creating note");
+        alert.setHeaderText("You've created the note on " + date);
+
+        alert.showAndWait();
+    }
+
+    private void showNotificationAboutCreatingPlan(String deadline) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Creating plan");
+        alert.setHeaderText("You've created the plan. DeadLine - " + deadline);
+
+        alert.showAndWait();
+    }
+
+    private void showNotificationAboutCreatingHoliday(String date) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Creating holiday");
+        alert.setHeaderText("You've created the holiday on " + date);
+
+        alert.showAndWait();
     }
 }
