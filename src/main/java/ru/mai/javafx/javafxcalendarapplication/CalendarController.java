@@ -43,10 +43,10 @@ public class CalendarController {
     private Button prevMonthBtn;
 
     @FXML
-    public GridPane root;
+    private GridPane root;
 
     @FXML
-    public Button signIn;
+    private Button signIn;
 
     @FXML
     private void openWindowSignInOrUp() {
@@ -124,17 +124,14 @@ public class CalendarController {
             File file = new File("src/main/resources/userID.txt");
             System.out.println("U LOGIN В ФАЙЛЕ ЕСТЬ АЙДИ");
             try {
-                Scanner scanner = new Scanner(file);
                 PrintWriter printWriter = new PrintWriter(file);
-                /*if (scanner.nextInt() != 0) {
-                    try (BufferedWriter bf = Files.newBufferedWriter(Path.of("src/main/resources/userID.txt"),
-                            StandardOpenOption.TRUNCATE_EXISTING)) {
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    printWriter.println(0);
-                    printWriter.close();
-                }*/
+                try (BufferedWriter bf = Files.newBufferedWriter(Path.of("src/main/resources/userID.txt"),
+                        StandardOpenOption.TRUNCATE_EXISTING)) {
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                printWriter.println(0);
+                printWriter.close();
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }

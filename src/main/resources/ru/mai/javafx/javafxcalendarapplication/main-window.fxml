@@ -14,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ffecb9;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.mai.javafx.javafxcalendarapplication.CalendarController">
    <children>
-      <AnchorPane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #ffecb9;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane prefHeight="70.0" prefWidth="800.0" style="-fx-background-color: #ffecb9;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button fx:id="signIn" layoutX="714.0" layoutY="13.0" mnemonicParsing="false" onAction="#openWindowSignInOrUp" prefHeight="34.0" prefWidth="202.0" style="-fx-background-color: #bfffff; -fx-border-color: black;" text="Sign in/up" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="10.0">
                <font>
@@ -24,9 +24,9 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <AnchorPane layoutX="545.0" layoutY="5.0" prefHeight="60.0" prefWidth="60.0" style="-fx-background-radius: 50; -fx-background-color: #60c3bc; -fx-border-radius: 50; -fx-border-color: black;">
+            <AnchorPane layoutX="545.0" layoutY="5.0" prefHeight="60.0" prefWidth="60.0" style="-fx-background-radius: 50; -fx-background-color: #60c3bc; -fx-border-radius: 50; -fx-border-color: black;" AnchorPane.rightAnchor="200.0">
                <children>
-                  <ImageView fx:id="imageUser" fitHeight="35.0" fitWidth="35.0" layoutX="13.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imageUser" fitHeight="35.0" fitWidth="35.0" layoutX="13.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="12.0">
                      <image>
                         <Image url="@profilephoto/free-icon-user-profile-4803050.png" />
                      </image></ImageView>
