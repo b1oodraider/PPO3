@@ -1,4 +1,4 @@
-package ru.mai.javafx.javafxcalendarapplication;
+package ru.mai.javafx.javafxcalendarapplication.modules;
 
 public class Plan {
     private int id_user;

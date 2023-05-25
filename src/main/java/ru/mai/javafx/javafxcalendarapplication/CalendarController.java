@@ -3,6 +3,7 @@ package ru.mai.javafx.javafxcalendarapplication;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -95,7 +96,7 @@ public class CalendarController {
             monthlyCalendar.setAlignment(Pos.CENTER);
             monthInd.setText(month + " - " + year);
         } else {
-            System.out.print("Please login to use full version");
+            showNotificationAboutNotSignIn();
         }
     }
 
@@ -114,6 +115,8 @@ public class CalendarController {
             root.add(monthlyCalendar, 0, 1);
             monthlyCalendar.setAlignment(Pos.CENTER);
             monthInd.setText(month + " - " + year);
+        } else {
+            showNotificationAboutNotSignIn();
         }
     }
 
@@ -122,7 +125,6 @@ public class CalendarController {
     void userExit() {
         if (checkLogin()) {
             File file = new File("src/main/resources/userID.txt");
-            System.out.println("U LOGIN В ФАЙЛЕ ЕСТЬ АЙДИ");
             try {
                 PrintWriter printWriter = new PrintWriter(file);
                 try (BufferedWriter bf = Files.newBufferedWriter(Path.of("src/main/resources/userID.txt"),
@@ -135,9 +137,34 @@ public class CalendarController {
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
+            showNotificationAboutLogOut();
         } else {
-            System.out.println("Чтобы Выйти, нужно зайти");
+            showNotificationAboutLogOutIsNot();
         }
+    }
+
+    private void showNotificationAboutLogOut() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Log out");
+        alert.setHeaderText("You log out! Please sign in or up!");
+
+        alert.showAndWait();
+    }
+
+    private void showNotificationAboutLogOutIsNot() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Can't Log out");
+        alert.setHeaderText("You can't log out because you don't sign in");
+
+        alert.showAndWait();
+    }
+
+    private void showNotificationAboutNotSignIn() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Not full version");
+        alert.setHeaderText("You can't use full version because you don't sign in");
+
+        alert.showAndWait();
     }
 
     public boolean checkLogin(){

@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import ru.mai.javafx.javafxcalendarapplication.modules.DatabaseHandler;
-import ru.mai.javafx.javafxcalendarapplication.modules.MonthlyCalendar;
+import ru.mai.javafx.javafxcalendarapplication.modules.User;
 
 import java.io.*;
 import java.nio.file.Files;

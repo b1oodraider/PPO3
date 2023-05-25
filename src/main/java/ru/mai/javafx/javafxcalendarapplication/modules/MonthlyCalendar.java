@@ -13,7 +13,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import ru.mai.javafx.javafxcalendarapplication.CalendarController;
 import ru.mai.javafx.javafxcalendarapplication.GetPhotosController;
-import ru.mai.javafx.javafxcalendarapplication.Plan;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -141,38 +140,42 @@ public class MonthlyCalendar extends GridPane {
                         if (event.getButton() == MouseButton.SECONDARY) {
                             GetPhotosController gtf = new GetPhotosController();
                             String description = "";
+                            boolean isPhotoHere = false;
                             try {
                                 gtf.getPhotos(btn.getId().toString());
+                                isPhotoHere = gtf.isPhotoHere;
                                 description = gtf.getDescription();
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
-                            Label label = new Label();
-                            label.setText(description);
-                            label.setMaxWidth(600);
-                            label.setMaxHeight(200);
-                            label.setLayoutY(450);
-                            label.setLayoutX(100);
-                            label.setWrapText(true);
-                            Image image;
-                            try {
-                                image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".jpg"));
-                            } catch (RuntimeException e) {
-                                image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".png"));
+                            if (isPhotoHere) {
+                                Label label = new Label();
+                                label.setText(description);
+                                label.setMaxWidth(600);
+                                label.setMaxHeight(200);
+                                label.setLayoutY(450);
+                                label.setLayoutX(100);
+                                label.setWrapText(true);
+                                Image image;
+                                try {
+                                    image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".jpg"));
+                                } catch (RuntimeException e) {
+                                    image = new Image(MonthlyCalendar.class.getResourceAsStream("/pictures/pic" + btn.getId().toString() + ".png"));
+                                }
+                                ImageView imageView = new ImageView(image);
+                                imageView.setFitHeight(400);
+                                imageView.setFitWidth(600);
+                                imageView.setLayoutX(100);
+                                imageView.setLayoutY(50);
+                                Group root = new Group(label, imageView);
+                                Scene scene = new Scene(root);
+                                Stage stagePhotos = new Stage();
+                                stagePhotos.setWidth(800);
+                                stagePhotos.setHeight(700);
+                                stagePhotos.setTitle("This day's photo");
+                                stagePhotos.setScene(scene);
+                                stagePhotos.show();
                             }
-                            ImageView imageView = new ImageView(image);
-                            imageView.setFitHeight(400);
-                            imageView.setFitWidth(600);
-                            imageView.setLayoutX(100);
-                            imageView.setLayoutY(50);
-                            Group root = new Group(label, imageView);
-                            Scene scene = new Scene(root);
-                            Stage stagePhotos = new Stage();
-                            stagePhotos.setWidth(800);
-                            stagePhotos.setHeight(700);
-                            stagePhotos.setTitle("This day's photo");
-                            stagePhotos.setScene(scene);
-                            stagePhotos.show();
                         } else {
                             try {
                                 addDateTOFile(Const.FILE_DATE_PATH, btn);
@@ -242,17 +245,14 @@ public class MonthlyCalendar extends GridPane {
                                     text.setId("Holiday");
                                 }
                                 Group root = new Group(buttonSave, text, radioButtonHoliday, radioButtonNotes, radioButtonTodo);
-                                Scene scene = new Scene(root, /*Color.color(0.9, 0.85, 0.63)*/ Color.CYAN);
+                                Scene scene = new Scene(root, Color.CYAN);
                                 Stage stagePhotos = new Stage();
                                 stagePhotos.setWidth(450);
                                 stagePhotos.setHeight(500);
                                 stagePhotos.setTitle("This day's notes");
                                 stagePhotos.setScene(scene);
                                 stagePhotos.show();
-
-                                
-
-                                buttonSave.setOnMouseClicked((eventSave) -> {// КНОПКА СЕЙВ
+                                buttonSave.setOnMouseClicked((eventSave) -> {
                                     if (radioButtonNotes.isSelected()) {
                                         text.setId("Notes");
 
@@ -358,9 +358,8 @@ public class MonthlyCalendar extends GridPane {
                                 
                             });
                         }
-                        System.out.println("U LOGIN");
                     } else {
-                        System.out.println("ВЫ НЕ ЗАРЕГАЛИСЬ");
+                        showNotificationAboutNotSignIn();
                     }
                 });
                 dateOfDay = String.valueOf(day) + "-" + String.valueOf(Arrays.asList(months).indexOf(month) + 1);
@@ -461,6 +460,13 @@ public class MonthlyCalendar extends GridPane {
         alert.setTitle("Creating holiday");
         alert.setHeaderText("You've created the holiday on " + date);
 
+        alert.showAndWait();
+    }
+
+    private void showNotificationAboutNotSignIn() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Not Sign In");
+        alert.setHeaderText("Please Sign In to use full version");
         alert.showAndWait();
     }
 }

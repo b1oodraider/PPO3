@@ -1,5 +1,7 @@
 package ru.mai.javafx.javafxcalendarapplication;
 
+import javafx.scene.control.Alert;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.regex.Pattern;
@@ -13,11 +15,12 @@ public class GetPhotosController {
     private static final String GET_URL = "https://api.nasa.gov/planetary/apod?api_key=yIFGyr7sOvcg3QuXOh09rAHE7dZKpZIsCZNthFxu&date=";
 
     private String description;
+    public boolean isPhotoHere = false;
 
     public void getPhotos(String date) throws IOException {
         String data = sendGET(date);
         System.out.println("GET DONE");
-        getPic(data, date);
+        getPic(data, date, isPhotoHere);
         this.description = getExp(data);
     }
 
@@ -49,7 +52,7 @@ public class GetPhotosController {
         }
     }
 
-    private void getPic(String data, String date) throws IOException {
+    private void getPic(String data, String date, boolean isPhotoHere) throws IOException {
         Pattern pattern = Pattern.compile("https.+?\\..{2,3}g");
         Matcher matcher = pattern.matcher(data);
         if (matcher.find()) {
@@ -66,10 +69,10 @@ public class GetPhotosController {
             } catch (FileAlreadyExistsException e) {
                 System.out.println("file already exists");
             }
-
             System.out.println("file downloaded");
+            isPhotoHere = true;
         } else {
-            System.out.println("not URL found");
+            showNotificationAboutNotPhoto();
         }
     }
     private String getExp(String data) {
@@ -78,7 +81,7 @@ public class GetPhotosController {
         if (matcher.find()) {
             return (data.substring(matcher.start() + 4, matcher.end() - 1));
         } else {
-            return ("not text found");
+            return ("This Photo has not description");
         }
     }
 
@@ -91,5 +94,12 @@ public class GetPhotosController {
         } else {
             return "no types detected";
         }
+    }
+
+    private void showNotificationAboutNotPhoto() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Photo isn't");
+        alert.setHeaderText("There isn't photo this day");
+        alert.showAndWait();
     }
 }

@@ -1,8 +1,5 @@
 package ru.mai.javafx.javafxcalendarapplication.modules;
 
-import ru.mai.javafx.javafxcalendarapplication.Plan;
-import ru.mai.javafx.javafxcalendarapplication.User;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;

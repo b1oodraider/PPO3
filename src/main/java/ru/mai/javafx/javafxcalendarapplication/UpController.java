@@ -4,6 +4,7 @@ import animations.Shake;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import ru.mai.javafx.javafxcalendarapplication.modules.DatabaseHandler;
+import ru.mai.javafx.javafxcalendarapplication.modules.User;
 
 import java.io.FileNotFoundException;
 import java.sql.ResultSet;

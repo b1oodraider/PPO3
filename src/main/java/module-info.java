@@ -6,4 +6,6 @@ module ru.mai.javafx.javafxcalendarapplication {
 
     opens ru.mai.javafx.javafxcalendarapplication to javafx.fxml;
     exports ru.mai.javafx.javafxcalendarapplication;
+    exports ru.mai.javafx.javafxcalendarapplication.modules;
+    opens ru.mai.javafx.javafxcalendarapplication.modules to javafx.fxml;
 }
