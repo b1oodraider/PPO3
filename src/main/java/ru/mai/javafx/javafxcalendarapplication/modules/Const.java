@@ -14,4 +14,6 @@ public class Const {
     public static final String HOLIDAYS_TABLE = "holidays";
     public static final String HOLIDAYS_DATE = "date";
     public static final String HOLIDAYS_HOLIDAY = "holiday";
+    public static final String FILE_USER_ID_PATH = "src/main/resources/userID.txt";
+    public static final String FILE_DATE_PATH = "src/main/resources/dataOfNote";
 }
