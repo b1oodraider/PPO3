@@ -15,12 +15,12 @@ public class GetPhotosController {
     private static final String GET_URL = "https://api.nasa.gov/planetary/apod?api_key=yIFGyr7sOvcg3QuXOh09rAHE7dZKpZIsCZNthFxu&date=";
 
     private String description;
-    public boolean isPhotoHere = false;
+    public boolean isPhotoHere;
 
     public void getPhotos(String date) throws IOException {
         String data = sendGET(date);
         System.out.println("GET DONE");
-        getPic(data, date, isPhotoHere);
+        getPic(data, date);
         this.description = getExp(data);
     }
 
@@ -52,7 +52,7 @@ public class GetPhotosController {
         }
     }
 
-    private void getPic(String data, String date, boolean isPhotoHere) throws IOException {
+    private void getPic(String data, String date) throws IOException {
         Pattern pattern = Pattern.compile("https.+?\\..{2,3}g");
         Matcher matcher = pattern.matcher(data);
         if (matcher.find()) {
@@ -72,6 +72,7 @@ public class GetPhotosController {
             System.out.println("file downloaded");
             isPhotoHere = true;
         } else {
+            isPhotoHere = false;
             showNotificationAboutNotPhoto();
         }
     }

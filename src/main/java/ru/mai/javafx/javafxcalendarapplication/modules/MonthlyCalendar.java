@@ -140,7 +140,7 @@ public class MonthlyCalendar extends GridPane {
                         if (event.getButton() == MouseButton.SECONDARY) {
                             GetPhotosController gtf = new GetPhotosController();
                             String description = "";
-                            boolean isPhotoHere = false;
+                            boolean isPhotoHere;
                             try {
                                 gtf.getPhotos(btn.getId().toString());
                                 isPhotoHere = gtf.isPhotoHere;
