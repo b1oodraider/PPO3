@@ -180,6 +180,15 @@ public class MonthlyCalendar extends GridPane {
                             stagePhotos.setScene(scene);
                             stagePhotos.show();
                         } else {
+                            String fileDataPath = "src/main/resources/dataOfNote";
+                            try {
+                                addDateTOFile(fileDataPath, btn);
+                            } catch (FileNotFoundException e) {
+                                throw new RuntimeException(e);
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+
                             Button buttonLeaveEntry = new Button();
                             buttonLeaveEntry.setText("Leave an entry for the day");
                             buttonLeaveEntry.setLayoutY(75);
@@ -250,7 +259,7 @@ public class MonthlyCalendar extends GridPane {
 
                                 String fileIdPath = "src/main/resources/userID.txt";
 
-                                String fileDataPath = "src/main/resources/dataOfNote";
+                                //String fileDataPath = "src/main/resources/dataOfNote";
 
                                 buttonSave.setOnMouseClicked((eventSave) -> {// КНОПКА СЕЙВ
                                     if (radioButtonNotes.isSelected()) {
@@ -285,13 +294,13 @@ public class MonthlyCalendar extends GridPane {
                                     }
                                 });
 
-                                try {
+                                /*try {
                                     addDateTOFile(fileDataPath, btn);
                                 } catch (FileNotFoundException e) {
                                     throw new RuntimeException(e);
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
-                                }
+                                }*/
                             });
                             buttonShowEntry.setOnMouseClicked((eventShow) -> {
                                 Label labelHeadNotes = new Label("Notes:");
@@ -324,6 +333,22 @@ public class MonthlyCalendar extends GridPane {
                                 stageShow.setWidth(300);
                                 stageShow.show();
                                 stageChoice.hide();
+
+                                DatabaseHandler dbhandler = new DatabaseHandler();
+                                ResultSet result = dbhandler.getInformationABoutDay();
+                                String daysTillEnd = "";
+
+                                try {
+                                    if (result.next()) {
+                                        labelNotes.setText(result.getString(1));
+                                        labelPlans.setText(result.getString(2));
+                                        labelHolidays.setText(result.getString(3));
+                                    }
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                } catch (NullPointerException e) {
+
+                                }
                             });
                         }
                         System.out.println("U LOGIN");

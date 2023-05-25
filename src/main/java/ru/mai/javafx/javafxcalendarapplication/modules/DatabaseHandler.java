@@ -2,12 +2,17 @@ package ru.mai.javafx.javafxcalendarapplication.modules;
 
 import ru.mai.javafx.javafxcalendarapplication.Plan;
 import ru.mai.javafx.javafxcalendarapplication.User;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.security.MessageDigest;
+import java.util.Scanner;
+
 public class DatabaseHandler extends Configs {
     Connection dbConnection;
 
@@ -39,8 +44,8 @@ public class DatabaseHandler extends Configs {
     public ResultSet getUser(User user) {
         ResultSet resultSet = null;
 
-        String select = "SELECT * FROM " + Const.USER_TABLE + " WHERE " +
-                Const.USERS_USERNAME + "=? AND " + Const.USERS_PASSWORD + "=?";
+        String select = "SELECT * FROM " + Const.USER_TABLE +
+                " WHERE " + Const.USERS_USERNAME + "=? AND " + Const.USERS_PASSWORD + "=?";
 
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
@@ -85,23 +90,6 @@ public class DatabaseHandler extends Configs {
         }
     }
 
-    public ResultSet getNote(Plan plan) {
-        ResultSet resultSet = null;
-        String select = "SELECT note FROM " + Const.NOTE_TABLE +
-                " WHERE " + Const.USERS_ID + "=? AND " + Const.NOTES_DATE + "=?";
-        try {
-            PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
-            preparedStatement.setInt(1, plan.getId_user());
-
-            resultSet = preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return resultSet;
-    }
-
     public void makePlan(Plan plan) {
         String insert = "INSERT INTO " + Const.PLANS_TABLE + "(" + Const.USERS_ID + "," +
                 Const.PLANS_DEADLINE + "," + Const.PLANS_PLAN + ")" + "VALUES(?,?,?)";
@@ -117,23 +105,6 @@ public class DatabaseHandler extends Configs {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public ResultSet getPlan(Plan plan) { // ПОЛУЧЕНИЕ ЗАДАЧИ ИЗ БД ПО ДАТЕ
-        ResultSet resultSet = null;
-        String select = "SELECT plan FROM " + Const.PLANS_TABLE +
-                " WHERE " + Const.USERS_ID + "=? AND " + Const.PLANS_DEADLINE + "=?";
-        try {
-            PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
-            preparedStatement.setInt(1, plan.getId_user());
-
-            resultSet = preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return resultSet;
     }
 
     public void makeHoliday(Plan plan) {
@@ -153,21 +124,58 @@ public class DatabaseHandler extends Configs {
         }
     }
 
-    public ResultSet getHoliday(Plan plan) { // ПОЛУЧЕНИЕ ПРАЗДНИКА ИЗ БД ПО ДАТЕ
+    public ResultSet getInformationABoutDay(/*int userID, String date*/) {
+        String fileIdPath = "src/main/resources/userID.txt";
+
+        String fileDataPath = "src/main/resources/dataOfNote";
+
         ResultSet resultSet = null;
-        String select = "SELECT holiday FROM " + Const.HOLIDAYS_TABLE +
-                " WHERE " + Const.USERS_ID + "=? AND " + Const.HOLIDAYS_DATE + "=?";
+
+        String select = "SELECT notes.note,  plans.plan, holidays.holiday\n" +
+                "FROM `notes`\n" +
+                "JOIN `plans` ON notes.date = plans.date\n" +
+                "JOIN holidays ON notes.date = holidays.date\n" +
+                "JOIN users ON notes.id_user = users.id_user\n" +
+                "WHERE notes.date" + "=? AND " + "users.id_user" + "=?";
+
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
-            preparedStatement.setInt(1, plan.getId_user());
 
+            preparedStatement.setString(1, readDateFromFile(fileDataPath));
+            preparedStatement.setInt(2, readIdFromFile(fileIdPath));
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return resultSet;
+    }
+
+    public String readDateFromFile(String path) {
+        String date = "";
+        File file = new File(path);
+        try {
+            Scanner scanner = new Scanner(file);
+            date = scanner.nextLine();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String finalDate = date;
+        return finalDate;
+    }
+
+    public int readIdFromFile(String path) {
+        int id = 0;
+        File file = new File(path);
+        try {
+            Scanner scanner = new Scanner(file);
+            id = scanner.nextInt();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        int finalId = id;
+        return finalId;
     }
 }
 
