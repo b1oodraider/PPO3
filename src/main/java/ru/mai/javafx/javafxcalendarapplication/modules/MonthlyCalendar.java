@@ -1,24 +1,18 @@
 package ru.mai.javafx.javafxcalendarapplication.modules;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import ru.mai.javafx.javafxcalendarapplication.CalendarController;
 import ru.mai.javafx.javafxcalendarapplication.GetPhotosController;
-import ru.mai.javafx.javafxcalendarapplication.InController;
 import ru.mai.javafx.javafxcalendarapplication.Plan;
 
 import java.io.*;
@@ -180,9 +174,8 @@ public class MonthlyCalendar extends GridPane {
                             stagePhotos.setScene(scene);
                             stagePhotos.show();
                         } else {
-                            String fileDataPath = "src/main/resources/dataOfNote";
                             try {
-                                addDateTOFile(fileDataPath, btn);
+                                addDateTOFile(Const.FILE_DATE_PATH, btn);
                             } catch (FileNotFoundException e) {
                                 throw new RuntimeException(e);
                             } catch (SQLException e) {
@@ -257,9 +250,7 @@ public class MonthlyCalendar extends GridPane {
                                 stagePhotos.setScene(scene);
                                 stagePhotos.show();
 
-                                String fileIdPath = "src/main/resources/userID.txt";
-
-                                //String fileDataPath = "src/main/resources/dataOfNote";
+                                
 
                                 buttonSave.setOnMouseClicked((eventSave) -> {// КНОПКА СЕЙВ
                                     if (radioButtonNotes.isSelected()) {
@@ -267,40 +258,32 @@ public class MonthlyCalendar extends GridPane {
 
                                         DatabaseHandler dbHandler = new DatabaseHandler();
                                         String aue = text.getText();
-                                        Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
+                                        Plan plan = new Plan(readIdFromFile(Const.FILE_USER_ID_PATH), readDateFromFile(Const.FILE_DATE_PATH), aue);
                                         dbHandler.makeNote(plan);
 
-                                        showNotificationAboutCreatingNote(readDateFromFile(fileDataPath));
+                                        showNotificationAboutCreatingNote(readDateFromFile(Const.FILE_DATE_PATH));
 
                                     } else if (radioButtonTodo.isSelected()) {
                                         text.setId("Plan");
 
                                         DatabaseHandler dbHandler = new DatabaseHandler();
                                         String aue = text.getText();
-                                        Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
+                                        Plan plan = new Plan(readIdFromFile(Const.FILE_USER_ID_PATH), readDateFromFile(Const.FILE_DATE_PATH), aue);
                                         dbHandler.makePlan(plan);
 
-                                        showNotificationAboutCreatingPlan(readDateFromFile(fileDataPath));
+                                        showNotificationAboutCreatingPlan(readDateFromFile(Const.FILE_DATE_PATH));
 
                                     } else {
                                         text.setId("Holiday");
 
                                         DatabaseHandler dbHandler = new DatabaseHandler();
                                         String aue = text.getText();
-                                        Plan plan = new Plan(readIdFromFile(fileIdPath), readDateFromFile(fileDataPath), aue);
+                                        Plan plan = new Plan(readIdFromFile(Const.FILE_USER_ID_PATH), readDateFromFile(Const.FILE_DATE_PATH), aue);
                                         dbHandler.makeHoliday(plan);
 
-                                        showNotificationAboutCreatingHoliday(readDateFromFile(fileDataPath));
+                                        showNotificationAboutCreatingHoliday(readDateFromFile(Const.FILE_DATE_PATH));
                                     }
                                 });
-
-                                /*try {
-                                    addDateTOFile(fileDataPath, btn);
-                                } catch (FileNotFoundException e) {
-                                    throw new RuntimeException(e);
-                                } catch (SQLException e) {
-                                    throw new RuntimeException(e);
-                                }*/
                             });
                             buttonShowEntry.setOnMouseClicked((eventShow) -> {
                                 Label labelHeadNotes = new Label("Notes:");
@@ -334,21 +317,45 @@ public class MonthlyCalendar extends GridPane {
                                 stageShow.show();
                                 stageChoice.hide();
 
-                                DatabaseHandler dbhandler = new DatabaseHandler();
-                                ResultSet result = dbhandler.getInformationABoutDay();
-                                String daysTillEnd = "";
+                                DatabaseHandler gettingNote = new DatabaseHandler();
+                                ResultSet resultNote = gettingNote.getNote();
 
                                 try {
-                                    if (result.next()) {
-                                        labelNotes.setText(result.getString(1));
-                                        labelPlans.setText(result.getString(2));
-                                        labelHolidays.setText(result.getString(3));
+                                    if (resultNote.next()) {
+                                        labelNotes.setText(resultNote.getString(1));
                                     }
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
                                 } catch (NullPointerException e) {
 
                                 }
+
+                                DatabaseHandler gettingPlan = new DatabaseHandler();
+                                ResultSet resultPlan = gettingPlan.getPlan();
+
+                                try {
+                                    if (resultPlan.next()) {
+                                        labelPlans.setText(resultPlan.getString(1));
+                                    }
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                } catch (NullPointerException e) {
+
+                                }
+
+                                DatabaseHandler gettingHoliday = new DatabaseHandler();
+                                ResultSet resultHoliday = gettingHoliday.getHoliday();
+
+                                try {
+                                    if (resultHoliday.next()) {
+                                        labelHolidays.setText(resultHoliday.getString(1));
+                                    }
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                } catch (NullPointerException e) {
+
+                                }
+                                
                             });
                         }
                         System.out.println("U LOGIN");

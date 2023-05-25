@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.mai.javafx.javafxcalendarapplication.modules.Const;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -28,10 +29,10 @@ public class Main extends Application {
     }
 
     public void exitFromAccount() throws FileNotFoundException {
-        File file = new File("src/main/resources/userID.txt");
+        File file = new File(Const.FILE_USER_ID_PATH);
         PrintWriter printWriter = new PrintWriter(file);
 
-        try (BufferedWriter bf = Files.newBufferedWriter(Path.of("src/main/resources/userID.txt"),
+        try (BufferedWriter bf = Files.newBufferedWriter(Path.of(Const.FILE_USER_ID_PATH),
                 StandardOpenOption.TRUNCATE_EXISTING)) {
         } catch (IOException e) {
             e.printStackTrace();

@@ -124,25 +124,63 @@ public class DatabaseHandler extends Configs {
         }
     }
 
-    public ResultSet getInformationABoutDay(/*int userID, String date*/) {
-        String fileIdPath = "src/main/resources/userID.txt";
-
-        String fileDataPath = "src/main/resources/dataOfNote";
-
+    public ResultSet getNote() {
         ResultSet resultSet = null;
 
-        String select = "SELECT notes.note,  plans.plan, holidays.holiday\n" +
-                "FROM `notes`\n" +
-                "JOIN `plans` ON notes.date = plans.date\n" +
-                "JOIN holidays ON notes.date = holidays.date\n" +
-                "JOIN users ON notes.id_user = users.id_user\n" +
+        String select = "SELECT note " +
+                "FROM `notes` " +
+                "JOIN users ON notes.id_user = users.id_user " +
                 "WHERE notes.date" + "=? AND " + "users.id_user" + "=?";
 
         try {
             PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
 
-            preparedStatement.setString(1, readDateFromFile(fileDataPath));
-            preparedStatement.setInt(2, readIdFromFile(fileIdPath));
+            preparedStatement.setString(1, readDateFromFile(Const.FILE_DATE_PATH));
+            preparedStatement.setInt(2, readIdFromFile(Const.FILE_USER_ID_PATH));
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public ResultSet getPlan() {
+        ResultSet resultSet = null;
+
+        String select = "SELECT plan " +
+                "FROM `plans` " +
+                "JOIN users ON plans.id_user = users.id_user " +
+                "WHERE plans.date" + "=? AND " + "users.id_user" + "=?";
+
+        try {
+            PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
+
+            preparedStatement.setString(1, readDateFromFile(Const.FILE_DATE_PATH));
+            preparedStatement.setInt(2, readIdFromFile(Const.FILE_USER_ID_PATH));
+            resultSet = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public ResultSet getHoliday() {
+        ResultSet resultSet = null;
+
+        String select = "SELECT holiday " +
+                "FROM `holidays` " +
+                "JOIN users ON holidays.id_user = users.id_user " +
+                "WHERE holidays.date" + "=? AND " + "users.id_user" + "=?";
+
+        try {
+            PreparedStatement preparedStatement = getDbConnection().prepareStatement(select);
+
+            preparedStatement.setString(1, readDateFromFile(Const.FILE_DATE_PATH));
+            preparedStatement.setInt(2, readIdFromFile(Const.FILE_USER_ID_PATH));
             resultSet = preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
