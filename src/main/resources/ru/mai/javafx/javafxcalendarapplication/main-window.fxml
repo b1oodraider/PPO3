@@ -31,7 +31,7 @@
                         <Image url="@profilephoto/free-icon-user-profile-4803050.png" />
                      </image></ImageView>
                </children></AnchorPane>
-            <Button fx:id="btnExit" disable="true" layoutX="31.0" layoutY="23.0" mnemonicParsing="false" onAction="#userExit" style="-fx-background-color: #ffbebe; -fx-border-color: black;" text="Exit" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="10.0">
+            <Button fx:id="btnExit" layoutX="31.0" layoutY="23.0" mnemonicParsing="false" onAction="#userExit" style="-fx-background-color: #ffbebe; -fx-border-color: black;" text="Exit" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="10.0">
                <font>
                   <Font name="System Bold Italic" size="15.0" />
                </font>

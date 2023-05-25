@@ -12,10 +12,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -67,18 +68,15 @@ public class CalendarController {
     @FXML
     public void initialize() {
         monthlyCalendar = new MonthlyCalendar();
-        if (checkLogin()) {
-            month = monthlyCalendar.getMonth();
-            months = monthlyCalendar.getMonths();
-            year = monthlyCalendar.getYear();
-            root.add(monthlyCalendar, 0, 1);
-            monthlyCalendar.setAlignment(Pos.CENTER);
-            monthInd.setText(month + " - " + year);
-        } else {
-            month = monthlyCalendar.getMonth();
-            year = monthlyCalendar.getYear();
-            monthInd.setText(month + " - " + year);
-        }
+        month = monthlyCalendar.getMonth();
+        months = monthlyCalendar.getMonths();
+        year = monthlyCalendar.getYear();
+        root.add(monthlyCalendar, 0, 1);
+        monthlyCalendar.setAlignment(Pos.CENTER);
+        monthInd.setText(month + " - " + year);
+        month = monthlyCalendar.getMonth();
+        year = monthlyCalendar.getYear();
+        monthInd.setText(month + " - " + year);
     }
 
     @FXML
@@ -122,6 +120,27 @@ public class CalendarController {
 
     @FXML
     void userExit() {
+        if (checkLogin()) {
+            File file = new File("src/main/resources/userID.txt");
+            System.out.println("U LOGIN В ФАЙЛЕ ЕСТЬ АЙДИ");
+            try {
+                Scanner scanner = new Scanner(file);
+                PrintWriter printWriter = new PrintWriter(file);
+                /*if (scanner.nextInt() != 0) {
+                    try (BufferedWriter bf = Files.newBufferedWriter(Path.of("src/main/resources/userID.txt"),
+                            StandardOpenOption.TRUNCATE_EXISTING)) {
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    printWriter.println(0);
+                    printWriter.close();
+                }*/
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            System.out.println("Чтобы Выйти, нужно зайти");
+        }
     }
 
     public boolean checkLogin(){

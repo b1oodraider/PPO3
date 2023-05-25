@@ -101,8 +101,6 @@ public class InController {
                 } else {
                     showNotificationAboutSingUp();
                 }
-                CalendarController calendarController = new CalendarController();
-                calendarController.initialize();
             } else {
                 Shake loginAnimation = new Shake(enterLogin);
                 Shake passwordAnimation = new Shake(enterPassword);
